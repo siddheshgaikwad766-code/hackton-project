@@ -1,0 +1,431 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>PRIVACY // SENTINEL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#05070d;--fg:#e7ecf5;--mut:#8a96ad;--cy:#22d3ee;--bl:#3b82f6;--vi:#8b5cf6;--or:#fb923c;--rd:#f87171;--gr:#34d399;--gl:rgba(255,255,255,.04);--bd:rgba(255,255,255,.1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(500px circle at var(--mx,50%) var(--my,30%),rgba(34,211,238,.07),transparent 60%)}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+main,header{position:relative;z-index:1}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 22px;border-bottom:1px solid var(--bd);backdrop-filter:blur(14px);background:rgba(5,7,13,.55);position:sticky;top:env(safe-area-inset-top,0px);z-index:5;flex-wrap:wrap}
+.logo{font-weight:700;letter-spacing:.14em;font-size:13px}.logo b{color:var(--cy);font-size:18px;margin-right:6px}
+nav{display:flex;gap:4px;max-width:100%;overflow-x:auto}nav button{white-space:nowrap}.inp{width:100%;background:#05070d;color:var(--fg);border:1px solid var(--bd);border-radius:10px;padding:11px;font-size:14px}table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px;border-bottom:1px solid var(--bd);text-align:left}th{color:var(--cy);font-size:10px;letter-spacing:.14em}
+nav button{background:none;border:0;color:var(--mut);font:600 11px/1 inherit;letter-spacing:.16em;padding:10px 12px;cursor:pointer;position:relative}
+nav button:after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:2px;background:var(--cy);transform:scaleX(0);transition:transform .35s;box-shadow:0 0 10px var(--cy)}
+nav button[aria-current=page]{color:var(--fg)}nav button[aria-current=page]:after,nav button:hover:after{transform:scaleX(1)}
+.sys{font:600 11px/1 inherit;letter-spacing:.14em;color:var(--gr)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;align-items:center;min-height:calc(100vh - 120px)}
+h1{font-size:clamp(40px,6.5vw,76px);line-height:1;margin:0 0 14px;letter-spacing:-.03em;font-weight:700}
+h1 span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);font-size:17px;max-width:480px}.tag{letter-spacing:.2em;font-size:11px;color:var(--cy);font-weight:600}
+.glass{background:var(--gl);border:1px solid var(--bd);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)}
+.drop{margin:24px 0 14px;padding:26px;text-align:center;border-style:dashed;transition:.3s;cursor:pointer}
+.drop.over{border-color:var(--cy);box-shadow:0 0 0 1px var(--cy),0 0 50px rgba(34,211,238,.25);transform:scale(1.025)}
+.drop h2{margin:0 0 4px;font-size:15px;letter-spacing:.2em}.drop p{margin:0;color:var(--mut);font-size:13px}
+.btn{font:600 12px/1 inherit;letter-spacing:.14em;padding:14px 20px;border-radius:12px;border:1px solid var(--bd);background:var(--gl);color:var(--fg);cursor:pointer;transition:transform .2s,box-shadow .3s,border-color .3s}
+.btn:hover{border-color:var(--cy);box-shadow:0 0 24px rgba(34,211,238,.2);transform:translateY(-2px)}
+.btn.pri{background:linear-gradient(110deg,rgba(34,211,238,.9),rgba(59,130,246,.9));color:#021018;border:0;background-size:200%;animation:shim 4s linear infinite}
+.btn.big{padding:18px 30px;font-size:14px}.btn:disabled{opacity:.4;cursor:default}
+@keyframes shim{to{background-position:200% 0}}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.note{font-size:12px;color:var(--mut);margin-top:14px}.err{margin-top:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--or);color:var(--or);font-size:13px}
+.anchor{min-height:420px}
+.strip{display:grid;grid-template-columns:1fr 220px 1fr;gap:12px;align-items:center;margin-bottom:18px}
+.strip .anchor{min-height:170px}.st-t{font-weight:700;letter-spacing:.18em;font-size:15px}.st-s{font-size:11px;letter-spacing:.2em;color:var(--cy)}
+.stl{text-align:right}
+.ws{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+.card{padding:18px}
+.doc{position:relative;overflow:hidden}
+pre{margin:0;font:13px/1.9 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}
+.beam{position:absolute;left:0;right:0;top:0;height:2px;background:var(--cy);box-shadow:0 0 24px 8px rgba(34,211,238,.35);opacity:0}
+.beam.on{opacity:1;animation:beam var(--d,4s) linear forwards}@keyframes beam{to{top:100%}}
+.hit{position:relative;border-radius:4px;transition:.3s}
+.hit.seen{outline:1px dashed var(--or);background:rgba(251,146,60,.1)}
+.hit.lock{outline:1.5px solid var(--cy);background:rgba(34,211,238,.14)}
+.hit.lock:after{content:attr(data-t);position:absolute;left:0;top:-15px;font:600 8px/1 system-ui;letter-spacing:.14em;color:var(--cy);white-space:nowrap}
+.hit.foc{box-shadow:0 0 0 3px var(--vi)}
+.hit.done{outline:1px solid var(--gr);background:rgba(52,211,153,.12);color:var(--gr)}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.steps li{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;color:#55607a;padding:7px 10px;border-radius:8px}
+.steps li.on{color:var(--fg);background:rgba(34,211,238,.08);box-shadow:inset 2px 0 var(--cy);animation:pl 1.2s infinite}
+.steps li.ok{color:var(--gr)}@keyframes pl{50%{background:rgba(34,211,238,.16)}}
+.pct{height:3px;background:var(--bd);border-radius:3px;margin-top:12px}.pct i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--vi));border-radius:3px;transition:width .3s}
+#nn{width:100%;height:170px;display:block}
+.risk{display:flex;gap:18px;align-items:center}
+.ring{position:relative;width:132px;height:132px;flex:none}.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}.ring .num{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:36px;font-weight:700}
+.ring small{display:block;font-size:9px;letter-spacing:.16em;color:var(--mut);font-weight:500}
+.lvl{font-weight:700;letter-spacing:.14em;font-size:13px}.cnt{color:var(--mut);font-size:13px;margin-top:6px}
+.det{display:grid;gap:8px;margin:16px 0}
+.dc{display:flex;gap:10px;align-items:center;padding:11px 12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;transition:.25s;background:rgba(255,255,255,.02);transform-style:preserve-3d}
+.dc:hover{border-color:var(--cy);transform:perspective(500px) rotateX(2deg) translateY(-2px)}
+.dc .t{font-weight:700;letter-spacing:.1em;font-size:12px;flex:1}.dc .t small{display:block;color:var(--mut);font-weight:500;letter-spacing:.04em;font-size:11px}
+.b{font-size:10px;letter-spacing:.1em;padding:3px 7px;border-radius:6px;border:1px solid currentColor;font-weight:600;white-space:nowrap}
+.hi{color:var(--rd)}.me{color:var(--or)}.ok{color:var(--gr)}
+.mini{font-size:10px;padding:5px 8px;border-radius:6px;border:1px solid var(--bd);background:none;color:var(--fg);cursor:pointer;letter-spacing:.1em}
+select{background:#0b1020;color:var(--fg);border:1px solid var(--bd);border-radius:8px;padding:8px}
+.cmp{position:relative;border:1px solid var(--bd);border-radius:14px;overflow:hidden;padding:16px;background:rgba(0,0,0,.3)}
+.cmp .top{position:absolute;inset:0;padding:16px;background:#0a1224;clip-path:inset(0 var(--c,50%) 0 0)}
+.cmp .lab{font:600 9px/1 system-ui;letter-spacing:.16em;color:var(--cy);margin-bottom:8px;display:block}
+.cmp input{width:100%;margin-top:12px}
+.wave{position:fixed;width:40px;height:40px;margin:-20px;border:2px solid var(--cy);border-radius:50%;pointer-events:none;z-index:9;box-shadow:0 0 30px var(--cy)}
+.dot{position:fixed;width:10px;height:10px;margin:-5px;border-radius:50%;background:var(--cy);box-shadow:0 0 14px 4px var(--cy);z-index:9;pointer-events:none}
+.ban{position:fixed;inset:0;z-index:8;display:grid;place-content:center;background:rgba(5,7,13,.7);backdrop-filter:blur(6px);letter-spacing:.3em;font-weight:700;font-size:clamp(14px,3vw,24px);color:var(--cy);text-align:center}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.tl{border-left:1px solid var(--bd);margin-left:8px;padding-left:22px}.tl div{position:relative;padding:8px 0}.tl div:before{content:"";position:absolute;left:-28px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)}
+.tl b{color:var(--cy);font-size:12px;margin-right:10px}
+.how{display:grid;gap:16px}.how .glass{padding:22px;opacity:0;transform:translateY(30px);transition:.7s}.how .glass.in{opacity:1;transform:none}
+.how h3{margin:0;letter-spacing:.2em}.how em{font-style:normal;color:var(--cy);font-size:34px;font-weight:700;margin-right:14px}
+.fb{display:none;position:absolute;inset:0;margin:auto;width:min(260px,70%);aspect-ratio:1;border-radius:50%;border:1px solid var(--cy);box-shadow:0 0 60px rgba(34,211,238,.25),inset 0 0 40px rgba(139,92,246,.2);animation:sp 14s linear infinite}
+.nogl .fb{display:block}@keyframes sp{to{transform:rotate(360deg)}}
+.rel{position:relative}
+dialog{background:#0b1020;color:var(--fg);border:1px solid var(--bd);border-radius:16px;width:min(560px,92vw)}dialog::backdrop{background:rgba(0,0,0,.6)}
+textarea{width:100%;min-height:160px;background:#05070d;color:var(--fg);border:1px solid var(--bd);border-radius:10px;padding:10px;font:13px ui-monospace,monospace}
+#sbar{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));font:600 9px/1 system-ui;letter-spacing:.14em;color:var(--mut);background:rgba(5,7,13,.8);backdrop-filter:blur(12px);border-top:1px solid var(--bd)}#sbar b{color:var(--gr);margin-left:4px}
+#jv{position:fixed;right:14px;bottom:44px;z-index:6;width:min(340px,92vw);font-size:12px;padding:14px}#toast{position:fixed;left:50%;bottom:56px;transform:translateX(-50%);z-index:12;padding:10px 18px;font-size:12px;letter-spacing:.14em}
+#pq{width:100%;background:#05070d;color:var(--fg);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:15px}#pl{list-style:none;margin:8px 0 0;padding:0}#pl li{padding:10px 12px;border-radius:8px;cursor:pointer}#pl li.sel{background:rgba(34,211,238,.12);box-shadow:inset 2px 0 var(--cy)}
+@media(max-width:860px){.hero,.ws{grid-template-columns:1fr}.hero{min-height:0}.hero .anchor{order:-1;min-height:260px}.strip{grid-template-columns:1fr}.stl{text-align:left}.strip .anchor{min-height:130px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style></head><body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<header><div class="logo"><b>◈</b>PRIVACY // SENTINEL</div>
+<nav aria-label="Primary"><button data-v="scan" aria-current="page">SCAN</button><button data-v="chat">CHAT SHIELD</button><button data-v="form">FORM GUARD</button><button data-v="val">VALIDATOR</button><button data-v="radar">RADAR</button><button data-v="files">VAULT</button><button data-v="act">AUDIT</button><button data-v="ps6">PS-06</button><button data-v="help">HELP</button><button data-v="how">HOW IT WORKS</button></nav>
+<div class="row"><button class="mini" id="kb" aria-label="Open command palette">CTRL+K</button><div class="sys">● SYSTEM SECURE</div></div></header>
+<main class="wrap">
+<section id="v-scan" class="view">
+ <div id="hero" class="hero"><div>
+  <div class="tag">PS-06 · PERSONAL DATA PRIVACY SHIELD · DETECT. PROTECT. SHARE SAFELY.</div>
+  <h1>Your data.<br><span>Your control.</span></h1>
+  <p class="sub">Detect sensitive information before it leaves your hands.</p>
+  <div id="drop" class="glass drop" tabindex="0" role="button" aria-label="Drop a file or press Enter to choose one"><h2>DROP TO PROTECT</h2><p>Upload a document, image, PDF or paste text.</p><p style="margin-top:8px;font-size:11px;letter-spacing:.2em">PDF • PNG • JPG • TEXT</p><input id="file" type="file" hidden accept=".txt,.csv,.md,.pdf,.png,.jpg,.jpeg,text/plain"></div>
+  <div class="row"><button class="btn pri" id="demo">▶ TRY LIVE DEMO</button><select id="samp" aria-label="Demo document"><option value="0">KYC form</option><option value="1">Bank statement</option><option value="2">Resume</option><option value="3">Medical summary</option><option value="4">GST invoice</option><option value="5">Scam SMS (fraud demo)</option></select><button class="btn" id="paste">PASTE TEXT</button></div><div class="row note" id="cats" style="margin-top:10px">DETECT: <label><input type="checkbox" data-c="IDENTITY" checked> IDENTITY</label><label><input type="checkbox" data-c="CONTACT" checked> CONTACT</label><label><input type="checkbox" data-c="FINANCIAL" checked> FINANCIAL</label><label><input type="checkbox" data-c="OTHER" checked> OTHER</label><label>STRICTNESS <select id="strict" aria-label="Detection strictness"><option value="0">Sensitive (all)</option><option value="75">Balanced</option><option value="85">Strict (validated only)</option></select></label></div>
+  <div id="herr" class="err" role="alert" hidden></div>
+  <p class="note">🔒 Your document is processed temporarily, entirely in this browser tab. Nothing is stored or logged. All demo data is fictional.</p>
+ </div>
+ <div class="anchor rel" id="aHero"><div class="fb"></div><div style="position:absolute;bottom:0;left:0;right:0;text-align:center"><div class="st-t">PRIVACY SHIELD READY</div><div class="st-s">READY TO PROTECT</div></div></div></div>
+
+ <div id="work" hidden>
+  <div class="strip"><div><div class="st-t" aria-live="polite">PRIVACY SHIELD READY</div><div class="st-s">READY TO PROTECT</div></div><div class="anchor rel" id="aWork"><div class="fb"></div></div><div class="stl"><button class="btn" id="skip">SKIP ANIMATION</button> <button class="btn" id="again">NEW SCAN</button></div></div>
+  <div class="ws">
+   <div>
+    <div class="glass card doc" id="docbox"><div class="row" style="justify-content:space-between;margin-bottom:10px"><div class="tag" id="docname">DOCUMENT</div><div class="row"><button class="mini" id="tgO" aria-pressed="true">ORIGINAL</button><button class="mini" id="tgP" aria-pressed="false">PROTECTED</button></div></div><div class="beam" id="beam"></div><pre id="doc"></pre></div>
+    <div class="glass card" id="proc" style="margin-top:18px"><canvas id="nn" aria-label="Privacy neural network animation"></canvas><ol class="steps" id="steps"></ol><div class="pct"><i id="pb"></i></div></div>
+   </div>
+   <div>
+    <div class="glass card" id="intel" hidden aria-live="polite"><div class="tag">PRIVACY INTELLIGENCE</div>
+     <div class="risk" style="margin-top:14px"><div class="ring"><svg width="132" height="132"><circle cx="66" cy="66" r="56" stroke="rgba(255,255,255,.08)"/><circle id="rc" cx="66" cy="66" r="56" stroke="var(--rd)" stroke-dasharray="351.9" stroke-dashoffset="351.9" style="transition:stroke-dashoffset .3s,stroke .3s"/></svg><div class="num"><span id="rn">0</span><small>PRIVACY RISK</small></div></div>
+     <div><div class="lvl" id="rl"></div><div class="cnt" id="rcnt"></div></div></div>
+     <div class="det" id="det"></div>
+     <div class="row" style="margin-bottom:12px"><label class="note" for="mode">SMART MASKING</label><select id="mode"><option value="block">██████████</option><option value="tag">[REDACTED]</option><option value="tok">[AADHAAR_1] token</option><option value="rm">(remove entirely)</option><option value="part">XXXX XXXX 3210</option></select></div>
+     <div class="row"><button class="btn pri big" id="pall">PROTECT ALL</button><button class="btn" id="psel">PROTECT SELECTED</button></div><div id="insp" style="margin-top:16px" aria-live="polite"></div>
+    </div>
+    <div class="glass card" id="clean" hidden style="text-align:center"><div class="st-t" style="color:var(--gr)">✓ NO SENSITIVE DATA FOUND</div><p class="sub" style="margin:8px auto">Your document appears safe to share.</p></div><div id="scam" style="margin-top:18px"></div>
+   </div>
+  </div>
+  <div id="result" hidden style="margin-top:22px"><div class="glass card"><div class="row" style="justify-content:space-between"><div class="tag">ORIGINAL ◂ DRAG ▸ PROTECTED COPY</div><div class="st-t" style="color:var(--gr)">SAFE COPY READY ✓</div></div>
+   <div id="sg" class="glass card" style="margin-top:12px" role="status"></div><div class="cmp" style="margin-top:12px" id="cmp"><span class="lab">PROTECTED COPY</span><pre id="pc"></pre><div class="top"><span class="lab">ORIGINAL (FICTIONAL)</span><pre id="oc"></pre></div></div>
+   <input type="range" id="sl" min="0" max="100" value="50" aria-label="Comparison slider" style="width:100%;margin-top:6px">
+   <div class="row" style="margin-top:14px"><button class="btn pri big" id="dl">⬇ DOWNLOAD SAFE COPY</button><button class="btn" id="cp">COPY SAFE TEXT</button><button class="btn" id="vr">VIEW PRIVACY REPORT</button><button class="btn" id="jr">REPORT (JSON)</button><button class="btn" id="dli" hidden>⬇ REDACTED IMAGE</button></div></div>
+   <div class="glass card" id="rep" hidden style="margin-top:18px"><div class="tag">PRIVACY REPORT</div><div class="grid3" id="repg" style="margin-top:12px"></div></div></div>
+ </div>
+</section>
+<section id="v-chat" class="view" hidden><div class="tag">CHAT SHIELD · PS-06 "CHATS"</div><h1 style="font-size:40px;margin:8px 0 6px">Chat shield</h1><p class="sub" style="margin-bottom:16px">Paste a chat before you forward it. Sensitive data is masked live as you type.</p>
+<div class="ws"><div class="glass card"><div class="row" style="justify-content:space-between"><div class="tag">INPUT</div><button class="mini" id="csamp">LOAD SAMPLE CHAT</button></div><textarea id="cin" aria-label="Chat text" style="margin-top:10px"></textarea></div>
+<div class="glass card"><div class="row" style="justify-content:space-between"><div class="tag">SAFE TO FORWARD</div><select id="cmode" class="msel" aria-label="Masking mode"></select></div><pre id="cout" style="margin:10px 0;min-height:140px"></pre><div class="lvl ok" id="csumm" aria-live="polite"></div><div class="row" style="margin-top:10px"><button class="btn pri" id="ccp">COPY SAFE CHAT</button></div></div></div></section>
+<section id="v-form" class="view" hidden><div class="tag">FORM GUARD · PS-06 "FORMS"</div><h1 style="font-size:40px;margin:8px 0 6px">Form guard</h1><p class="sub" style="margin-bottom:16px">Check what you are about to type into a form. Each field is validated, and you can build a shareable version with sensitive fields masked.</p>
+<div class="ws"><div class="glass card" id="ffs" style="display:grid;gap:6px"></div><div class="glass card"><div class="row" style="justify-content:space-between"><div class="tag">SHAREABLE VERSION</div><select id="fmode" class="msel" aria-label="Masking mode"></select></div><pre id="fout" style="margin:10px 0;min-height:140px"></pre><div class="lvl ok" id="fsum" aria-live="polite"></div><div class="row" style="margin-top:10px"><button class="btn pri" id="fgo">BUILD SHAREABLE VERSION</button><button class="btn" id="fcp">COPY</button></div></div></div></section>
+<section id="v-val" class="view" hidden><div class="tag">VALIDATOR · HOW FALSE ALERTS ARE REDUCED</div><h1 style="font-size:40px;margin:8px 0 6px">Format lab</h1><p class="sub" style="margin-bottom:14px">Type any ID or number. See which Indian formats it matches and whether its validation check passes. A format match that fails its check is rejected as a false alert. (Bank accounts are normally flagged only next to a label like "A/c No", so a label is assumed here.)</p>
+<input id="vin" class="inp" placeholder="e.g. ABCPE1234F" aria-label="Value to validate" autocomplete="off"><div class="row" id="vex" style="margin:12px 0"></div><div class="det" id="vout"></div></section>
+<section id="v-ps6" class="view" hidden><div class="tag">PS-06 · CYBERSECURITY</div><h1 style="font-size:40px;margin:8px 0 6px">Personal Data Privacy Shield</h1><p class="sub" style="margin-bottom:16px">People unknowingly share Aadhaar, PAN, phone numbers and bank details in documents, chats and forms. This tool detects them in text or images, lets you mask or remove them, validates matches, and produces a cleaned copy plus a summary.</p>
+<div class="glass card" style="margin-bottom:16px"><div class="tag">REQUIREMENT → WHERE IT LIVES</div><div id="req" style="margin-top:10px"></div></div>
+<div class="glass card" style="margin-bottom:16px"><div class="tag">SUPPORTED FORMATS AND CHECKS</div><div style="overflow-x:auto"><table id="fmt"></table></div></div>
+<div class="glass card"><div class="tag">30-SECOND JUDGE SCRIPT</div><ol class="sub" style="font-size:14px"><li>SCAN → pick a demo document → TRY LIVE DEMO</li><li>Click a detection card to see the Inspector and why it was flagged</li><li>VALIDATOR → compare a valid and an invalid Aadhaar</li><li>Back on SCAN, PROTECT ALL → see ShareGuard, the safe copy and the report</li><li>CHAT SHIELD → paste a chat and watch it mask live</li></ol></div></section>
+<section id="v-help" class="view" hidden><div class="tag">HELP · REPORT FRAUD · PROTECT YOURSELF</div><h1 style="font-size:40px;margin:8px 0 6px">Help &amp; contacts</h1><p class="sub">Official reporting channels in India. Numbers and portals can change, so confirm on the official sites.</p>
+<div class="grid3" style="margin:18px 0">
+<div class="glass card"><div class="tag">FINANCIAL FRAUD HELPLINE</div><p><b><a href="tel:1930" style="color:var(--cy)">1930</a></b> — call as soon as money is lost; the earlier you report, the better the chance of freezing the transfer.</p></div>
+<div class="glass card"><div class="tag">CYBER CRIME PORTAL</div><p><a href="https://cybercrime.gov.in" target="_blank" rel="noopener" style="color:var(--cy)">cybercrime.gov.in</a> — file an online complaint for cyber fraud, scams and account misuse.</p></div>
+<div class="glass card"><div class="tag">AADHAAR (UIDAI)</div><p><b><a href="tel:1947" style="color:var(--cy)">1947</a></b> · help@uidai.gov.in · <a href="https://myaadhaar.uidai.gov.in" target="_blank" rel="noopener" style="color:var(--cy)">myaadhaar.uidai.gov.in</a> — lock biometrics, generate a Virtual ID, check authentication history.</p></div>
+<div class="glass card"><div class="tag">SUSPICIOUS CALLS / SMS / SIMs</div><p><a href="https://sancharsaathi.gov.in" target="_blank" rel="noopener" style="color:var(--cy)">sancharsaathi.gov.in</a> — report suspicious communication (Chakshu) and see mobile connections issued in your name.</p></div>
+<div class="glass card"><div class="tag">YOUR BANK</div><p>Block the card or account immediately using the number printed on your card or on the bank's official website — never a number from an SMS, ad or search result.</p></div>
+<div class="glass card"><div class="tag">SECURITY INCIDENTS (CERT-In)</div><p>incident@cert-in.org.in — for serious cyber security incidents.</p></div></div>
+<div class="tag">LEARN</div><div style="display:grid;gap:10px;margin-top:10px">
+<details class="glass card"><summary><b>What is PII?</b></summary><p class="sub">Personally identifiable information is anything that identifies you alone or combined with other data: ID numbers, phone, email, address, bank details, date of birth.</p></details>
+<details class="glass card"><summary><b>How to protect your Aadhaar</b></summary><p class="sub">Prefer Masked Aadhaar or a Virtual ID when a full number is not legally required, lock biometrics when unused, and never share an OTP.</p></details>
+<details class="glass card"><summary><b>How to spot a scam</b></summary><p class="sub">Urgency, threats, prizes that need fees, requests for OTP/PIN/CVV, lookalike links, and remote-access apps are the usual red flags. Stop, do not click, verify via an official channel.</p></details>
+<details class="glass card"><summary><b>What should you redact?</b></summary><p class="sub">ID numbers, account and card numbers, phone, email, address and signatures, unless the recipient has a verified, specific need.</p></details>
+<details class="glass card"><summary><b>Sharing documents safely</b></summary><p class="sub">Write the purpose on the copy (e.g. "for X only, date"), send over a trusted channel, and share the protected copy rather than the original.</p></details></div></section>
+<section id="v-radar" class="view" hidden><div class="tag">RADAR · EXPOSURE BY CATEGORY (LIVE FROM DETECTIONS)</div><h1 style="font-size:40px;margin:8px 0 18px">Exposure radar</h1><div class="ws"><div class="glass card" style="text-align:center"><svg id="rad" viewBox="-20 -20 380 380" style="max-width:440px;width:100%" role="img" aria-label="Exposure radar chart"></svg><div class="st-t" id="radn" style="font-size:26px">—</div><div class="st-s">EXPOSURE INDEX</div></div><div class="det" id="radt"></div></div></section>
+<section id="v-files" class="view" hidden><div class="tag">SESSION VAULT · METADATA ONLY, AVAILABLE DURING THIS SESSION</div><h1 style="font-size:40px;margin:8px 0">Session vault</h1><button class="btn" id="clr">CLEAR SESSION DATA</button><div class="grid3" id="fstats" style="margin:16px 0"></div><div class="grid3" id="fl"><p class="sub">No files yet. Run a scan or the live demo.</p></div></section>
+<section id="v-act" class="view" hidden><div class="tag">ACTIVITY</div><h1 style="font-size:40px;margin-top:8px">Activity</h1><div class="tl" id="tl"><p class="sub">No activity yet.</p></div></section>
+<section id="v-how" class="view" hidden><div class="tag">HOW IT WORKS</div><h1 style="font-size:40px;margin:8px 0 22px">Five steps to safe.</h1><div class="how" id="how"></div></section>
+</main>
+<div id="jv" class="glass" hidden><div class="tag">JUDGE VIEW · ACTUAL ENGINES</div><p>OCR: Tesseract.js (in-browser, loaded on demand)<br>DETECTION: regex + validators (Verhoeff, Luhn, PAN holder code)<br>DOCUMENT: pdf.js text layer · text/paste direct<br>REDACTION: string masking; canvas boxes for images<br>Not in this build: FastAPI, PyMuPDF, Pillow, PDF output.</p></div><div id="toast" class="glass" role="status" hidden></div>
+<footer id="sbar"><span>OCR<b id="sb-ocr">● READY</b></span><span>DETECTION<b id="sb-det">● READY</b></span><span>VALIDATION<b id="sb-val">● READY</b></span><span>REDACTION<b id="sb-red">● READY</b></span><span>PRIVACY<b id="sb-priv">● ACTIVE</b></span><button class="mini" id="jb" aria-label="Toggle judge view">JUDGE VIEW</button></footer>
+<dialog id="pal" aria-label="Command palette"><input id="pq" placeholder="Type a command…" aria-label="Command"><ul id="pl" role="listbox"></ul></dialog>
+<dialog id="dlg"><p class="tag">PASTE TEXT</p><textarea id="ta" aria-label="Text to scan"></textarea><div class="row" style="margin-top:12px"><button class="btn pri" id="go">SCAN</button><button class="btn" id="cl">CANCEL</button></div></dialog>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let skip=false;
+const sleep=ms=>new Promise(r=>setTimeout(r,skip?ms/10:RM?ms*.5:ms));
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+/* ---------- detection engine ---------- */
+const D=[[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,0,6,7,8,9,5],[2,3,4,0,1,7,8,9,5,6],[3,4,0,1,2,8,9,5,6,7],[4,0,1,2,3,9,5,6,7,8],[5,9,8,7,6,0,4,3,2,1],[6,5,9,8,7,1,0,4,3,2],[7,6,5,9,8,2,1,0,4,3],[8,7,6,5,9,3,2,1,0,4],[9,8,7,6,5,4,3,2,1,0]];
+const P=[[0,1,2,3,4,5,6,7,8,9],[1,5,7,6,2,8,3,0,9,4],[5,8,0,3,7,9,6,1,4,2],[8,9,1,6,0,4,3,5,2,7],[9,4,5,3,1,2,6,8,7,0],[4,2,8,6,5,7,3,9,0,1],[2,7,9,3,8,0,6,4,1,5],[7,0,4,6,9,1,3,2,5,8]];
+const verhoeff=s=>{let c=0;[...s].reverse().forEach((d,i)=>c=D[c][P[i%8][+d]]);return c===0};
+const vgen=s=>{let c=0;[...s].reverse().forEach((d,i)=>c=D[c][P[(i+1)%8][+d]]);return [0,4,3,2,1,5,6,7,8,9][c]};
+const luhn=s=>{s=s.replace(/\D/g,'');if(s.length<13||s.length>19)return false;let t=0;[...s].reverse().forEach((d,i)=>{d=+d;if(i%2){d*=2;if(d>9)d-=9}t+=d});return t%10===0};
+const RULES=[
+{type:'AADHAAR',cat:'IDENTITY',sev:'HIGH',w:20,conf:97,re:/(?<!\d)[2-9]\d{3}\s?\d{4}\s?\d{4}(?!\d)/g,chk:v=>verhoeff(v.replace(/\s/g,'')),note:'Verhoeff checksum'},
+{type:'PAN',cat:'IDENTITY',sev:'HIGH',w:16,conf:95,re:/\b[A-Z]{5}\d{4}[A-Z]\b/g,chk:v=>'ABCFGHLJPT'.includes(v[3]),note:'Holder-type code'},
+{type:'PASSPORT',cat:'IDENTITY',sev:'HIGH',w:16,conf:74,re:/\b[A-PR-WY][1-9]\d{6}\b/g,chk:()=>1,note:'Format only'},
+{type:'IFSC',cat:'FINANCIAL',sev:'MEDIUM',w:8,conf:91,re:/\b[A-Z]{4}0[A-Z0-9]{6}\b/g,chk:()=>1,note:'Bank-code format'},
+{type:'BANK ACCOUNT',cat:'FINANCIAL',sev:'HIGH',w:18,conf:88,re:/(?<=(?:account|a\/c|acct)[^\d\n]{0,12})\d{9,18}(?!\d)/gi,chk:()=>1,note:'Length + context label'},
+{type:'CARD',cat:'FINANCIAL',sev:'HIGH',w:18,conf:96,re:/(?<!\d)\d{4}[ -]?\d{4}[ -]?\d{4}[ -]?\d{1,7}(?!\d)/g,chk:luhn,note:'Luhn checksum'},
+{type:'PHONE',cat:'CONTACT',sev:'MEDIUM',w:12,conf:78,re:/(?<!\d)(?:\+91[ -]?)?[6-9]\d{9}(?!\d)/g,chk:()=>1,note:'Format valid, ownership unknown'},
+{type:'EMAIL',cat:'CONTACT',sev:'MEDIUM',w:8,conf:93,re:/[\w.+-]+@[\w-]+\.[\w.]+/g,chk:()=>1,note:'RFC-style format'},
+{type:'ADDRESS',cat:'CONTACT',sev:'MEDIUM',w:12,conf:80,re:/(?<=address\s*:\s*)[^\n]{10,90}/gi,chk:()=>1,note:'Label context'},
+{type:'VOTER ID',cat:'IDENTITY',sev:'HIGH',w:14,conf:82,re:/\b[A-Z]{3}\d{7}\b/g,chk:()=>1,note:'EPIC format'},
+{type:'DRIVING LICENCE',cat:'IDENTITY',sev:'HIGH',w:14,conf:86,re:/\b[A-Z]{2}\d{2}\s?\d{11}\b/g,chk:()=>1,note:'State code + year + serial'},
+{type:'DATE OF BIRTH',cat:'IDENTITY',sev:'MEDIUM',w:10,conf:90,re:/(?<=(?:dob|date of birth)\s*:\s*)\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}/gi,chk:()=>1,note:'Label + date format'},
+{type:'GSTIN',cat:'FINANCIAL',sev:'MEDIUM',w:8,conf:92,re:/\b\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]\b/g,chk:()=>1,note:'GST format'},
+{type:'OTP',cat:'OTHER',sev:'HIGH',w:14,conf:88,re:/(?<=otp\s*(?:is|:)\s*)\d{4,8}(?!\d)/gi,chk:()=>1,note:'OTP label + digits'},
+{type:'SECRET KEY',cat:'OTHER',sev:'HIGH',w:18,conf:92,re:/\b(?:AKIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{30,})\b/g,chk:()=>1,note:'Known key prefix'},
+{type:'UPI ID',cat:'FINANCIAL',sev:'MEDIUM',w:10,conf:90,re:/[\w.-]{2,}@(?:ok(?:axis|hdfcbank|icici|sbi)|ybl|paytm|upi|axl|ibl|apl)\b/gi,chk:()=>1,note:'UPI handle'}];RULES.splice(7,0,RULES.pop());
+function analyze(t){const out=[];let rej=0;
+ for(const r of RULES.filter(r=>!OFF.has(r.cat)&&r.conf>=MINC))for(const m of t.matchAll(r.re)){const s=m.index,e=s+m[0].length;
+  if(out.some(o=>s<o.end&&e>o.start))continue;
+  if(!r.chk(m[0])){rej++;continue}
+  out.push({type:r.type,cat:r.cat,sev:r.sev,w:r.w,conf:r.conf,note:r.note,val:m[0],start:s,end:e,review:r.conf<85,st:'pending',prot:false})}
+ out.sort((a,b)=>a.start-b.start);out.forEach((o,i)=>o.id=i);return {hits:out,rej}}
+const maskOf=(h,mode)=>{const v=h.val;if(mode==='rm')return '';if(mode==='tok')return '['+h.type.replace(/ /g,'_')+'_'+(h.id+1)+']';if(mode==='tag')return '[REDACTED]';if(mode==='block')return '█'.repeat(Math.min(v.length,14));
+ if(h.type==='EMAIL'){const[a,b]=v.split('@');return a[0]+'•••@'+b}return v.replace(/[A-Za-z0-9]/g,(c,i,s)=>i<s.length-4?'X':c)};
+const mkDemo=()=>{const p='23456789012',a=p+vgen(p);return `IDENTITY VERIFICATION FORM (FICTIONAL DEMO)\n\nName: Aarav Sharma\nAadhaar: ${a.replace(/(\d{4})(?=\d)/g,'$1 ')}\nPAN: ABCPE1234F\nPhone: 9876543210\nEmail: aarav.demo@example.com\nBank Account: 123456789012\nIFSC: ABCD0123456\nReference No: 20260413 (not sensitive)\n`};
+/* ---------- state ---------- */
+let H=[],TXT='',NAME='',BASE=0,session=[],acts=[],busy=false,cs='ready';
+const log=m=>{acts.push({t:new Date().toTimeString().slice(0,5),m});renderAct()};
+function setCore(st,t,s){cs=st;$$('.st-t:not(#result .st-t)').forEach(e=>{if(!e.closest('#clean')&&!e.closest('#how'))e.textContent=t});$$('.st-s').forEach(e=>e.textContent=s)}
+const anchor=()=>$('#work').hidden?$('#aHero'):$('#aWork');
+const tgt=()=>{const r=anchor().getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height*(anchor().id==='aHero'?.4:.5)}};
+function count(el,a,b,ms,fn=v=>Math.round(v)){if(RM||skip){el.textContent=fn(b);return Promise.resolve()}return new Promise(r=>{const t0=performance.now();(function f(n){const k=Math.min(1,(n-t0)/ms);el.textContent=fn(a+(b-a)*(1-Math.pow(1-k,3)));k<1?requestAnimationFrame(f):r()})(t0)})}
+const setRing=v=>{$('#rc').style.strokeDashoffset=351.9*(1-v/100);const hi=v>=60,mo=v>=30&&!hi;$('#rc').style.stroke=hi?'var(--rd)':mo?'var(--or)':'var(--gr)';$('#rl').className='lvl '+(hi?'hi':mo?'me':'ok');$('#rl').textContent=(hi?'▲ HIGH EXPOSURE':mo?'⚠ MODERATE EXPOSURE':'✓ LOW RISK')};
+/* ---------- views / nav ---------- */
+$$('nav button').forEach(b=>b.onclick=()=>{$$('nav button').forEach(x=>x.removeAttribute('aria-current'));b.setAttribute('aria-current','page');$$('.view').forEach(v=>v.hidden=v.id!=='v-'+b.dataset.v);b.dataset.v==='radar'&&drawRadar()});
+const HOW=[['SCAN','We inspect text and images.'],['DETECT','Sensitive information is identified.'],['VERIFY','Patterns are validated (Verhoeff, Luhn, PAN/IFSC rules) to reduce false alerts.'],['PROTECT','Sensitive information is masked or removed.'],['SHARE SAFELY','A cleaned copy is generated.']];
+$('#how').innerHTML=HOW.map((h,i)=>`<div class="glass"><h3><em>0${i+1}</em>${h[0]}</h3><p class="sub" style="margin:6px 0 0 56px">${h[1]}</p></div>`).join('');
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.2});$$('.how .glass').forEach(e=>io.observe(e));
+addEventListener('pointermove',e=>{document.body.style.setProperty('--mx',e.clientX+'px');document.body.style.setProperty('--my',e.clientY+'px')});
+function renderAct(){$('#tl').innerHTML=acts.map(a=>`<div><b>${a.t}</b>${esc(a.m)}</div>`).join('')||'<p class="sub">No activity yet.</p>'}
+function renderFiles(){const T=session.reduce((a,f)=>a+f.n,0),A=session.length?Math.round(session.reduce((a,f)=>a+f.a-f.b,0)/session.length):0;$('#fstats').innerHTML=[['FILES PROTECTED',session.length],['ITEMS MASKED',T],['AVG RISK REDUCTION',A+' pts']].map(x=>`<div class="glass card"><div class="tag">${x[0]}</div><div class="st-t" style="font-size:28px;margin-top:6px">${x[1]}</div></div>`).join('');$('#fl').innerHTML=session.map(f=>`<div class="glass card"><b>${esc(f.name)}</b><div class="note">${f.ts}</div><div style="margin:10px 0">${f.n} items protected</div><div class="st-t">${f.a} → ${f.b}</div><div class="ok b" style="display:inline-block;margin-top:10px">SAFE TO SHARE ✓</div></div>`).join('')||'<p class="sub">No files yet.</p>'}
+/* ---------- input ---------- */
+const fail=(t,m)=>{const e=$('#herr');e.hidden=false;e.innerHTML=`<b>${t}</b> — ${m}`;setCore('ready','PRIVACY SHIELD READY','READY TO PROTECT')};
+function ingest(f){$('#herr').hidden=true;const n=f.name.toLowerCase();
+ if(/\.(txt|csv|md)$/.test(n)||f.type==='text/plain'){const r=new FileReader();r.onload=()=>run(r.result,f.name);r.readAsText(f)}
+ else if(/\.pdf$/.test(n))readPdf(f);else if(/\.(png|jpe?g)$/.test(n))readImage(f);
+ else fail('UNSUPPORTED FORMAT','Please upload a PDF, JPG, PNG or text.')}
+const dz=$('#drop');dz.onclick=()=>$('#file').click();dz.onkeydown=e=>(e.key==='Enter'||e.key===' ')&&(e.preventDefault(),$('#file').click());
+$('#file').onchange=e=>e.target.files[0]&&ingest(e.target.files[0]);
+dz.ondragover=e=>{e.preventDefault();dz.classList.add('over');setCore('drag','SECURE CHANNEL OPEN','DROP TO SCAN')};
+dz.ondragleave=()=>{dz.classList.remove('over');setCore('ready','PRIVACY SHIELD READY','READY TO PROTECT')};
+dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');e.dataTransfer.files[0]&&ingest(e.dataTransfer.files[0])};
+$('#paste').onclick=()=>$('#dlg').showModal();$('#cl').onclick=()=>$('#dlg').close();
+$('#go').onclick=()=>{const v=$('#ta').value.trim();$('#dlg').close();v&&run(v,'pasted-text.txt')};
+$('#demo').onclick=()=>{const k=+$('#samp').value;run(mkSample(k),['identity-demo','bank-statement','resume','medical-summary','gst-invoice','scam-sms'][k]+'.txt',true)};
+$('#skip').onclick=()=>skip=true;$('#again').onclick=()=>{skip=false;busy=false;$('#work').hidden=true;$('#hero').hidden=false;setCore('ready','PRIVACY SHIELD READY','READY TO PROTECT')};
+$('#mode').onchange=()=>H.some(h=>h.prot)&&drawDoc(true);
+const OFF=new Set();let IMG=null,WORDS=[],AFT=0;
+$$('#cats input').forEach(i=>i.onchange=()=>i.checked?OFF.delete(i.dataset.c):OFF.add(i.dataset.c));
+const ag=p=>(p+vgen(p)).replace(/(\d{4})(?=\d)/g,'$1 ');
+function mkSample(k){return [mkDemo(),
+`ACME BANK - ACCOUNT STATEMENT (FICTIONAL)\nCustomer: Diya Verma\nA/c No: 004512367890123\nIFSC: ACME0004512\nRegistered Mobile: +91 9812345670\nPAN: BCDFP5678Q\nUPI: diya.demo@okaxis\nCard on file: 4111 1111 1111 1111\nClosing balance: 52,300.00 (not sensitive)\n`,
+`RESUME (FICTIONAL)\nName: Kabir Nair\nEmail: kabir.demo@example.com\nPhone: 9123456780\nDOB: 14/08/1998\nAddress: 12 Demo Street, Sample Nagar, Pune 411001\nPassport: K1234567\nSkills: React, Python (not sensitive)\n`,
+`PATIENT SUMMARY (FICTIONAL)\nPatient: Meera Iyer\nAadhaar: ${ag('34567890123')}\nMobile: 9988776655\nVoter ID: XYZ1234567\nDriving Licence: MH12 20150001234\nDiagnosis: seasonal flu (not sensitive)\n`,
+`TAX INVOICE (FICTIONAL)\nSeller GSTIN: 27ABCDE1234F1Z5\nPAN: ABCPE1234F\nPay to UPI: shop.demo@ybl\nBank Account: 998877665544\nIFSC: DEMO0001234\nInvoice No: 20260077 (not sensitive)\n`,
+`SBI ALERT (FICTIONAL SCAM DEMO)\nDear customer, your KYC expires today and your account will be blocked.\nUpdate immediately: http://sbi-kyc-update.xyz/verify\nYour OTP is 482913. Share the OTP with our agent to avoid suspension.\nYou have won a lottery of Rs 25,00,000! Pay a refundable processing fee of Rs 4999.\nInstall AnyDesk to complete verification. Call +91 9000000001\n`][k]}
+const lib=u=>new Promise((ok,no)=>{if(document.querySelector(`script[src="${u}"]`))return ok();const s=document.createElement('script');s.src=u;s.onload=ok;s.onerror=no;document.head.append(s)});
+const NOREAD='Unable to reliably read this document. OCR engines load from a CDN, so open this file with internet access (scanned or blurry files may also fail).';
+async function readImage(f){try{setCore('scan','ANALYZING DOCUMENT','OCR RUNNING…');sb('ocr','RUNNING');await lib('https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js');
+ const im=new Image();im.src=URL.createObjectURL(f);await im.decode();const {data}=await Tesseract.recognize(f,'eng');
+ const ws=data.words||(data.blocks||[]).flatMap(b=>b.paragraphs.flatMap(p=>p.lines.flatMap(l=>l.words)));let c=0;
+ ws.forEach(w=>{const i=data.text.indexOf(w.text,c);w.s=i;w.e=i+w.text.length;if(i>=0)c=w.e});WORDS=ws;
+ if(data.text.trim().length<8)throw 0;sb('ocr','READY');run(data.text,f.name,false,im)}catch(e){sb('ocr','READY');fail('SCAN INTERRUPTED',NOREAD)}}
+async function readPdf(f){try{setCore('scan','ANALYZING DOCUMENT','READING PDF…');await lib('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+ pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+ const d=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;let t='';
+ for(let i=1;i<=d.numPages;i++){const c=await(await d.getPage(i)).getTextContent();t+=c.items.map(x=>x.str).join(' ')+'\n'}
+ if(t.trim().length<10)throw 0;run(t,f.name)}catch(e){fail('SCAN INTERRUPTED',NOREAD)}}
+function redImg(){const c=document.createElement('canvas');c.width=IMG.naturalWidth;c.height=IMG.naturalHeight;const x=c.getContext('2d');x.drawImage(IMG,0,0);x.fillStyle='#000';
+ H.filter(h=>h.prot).forEach(h=>WORDS.forEach(w=>{if(w.s>=0&&w.s<h.end&&w.e>h.start){const b=w.bbox;x.fillRect(b.x0-2,b.y0-2,b.x1-b.x0+4,b.y1-b.y0+4)}}));return c}
+function imgOut(){const b=$('#dli');let pv=$('#pv');if(!pv){pv=document.createElement('div');pv.id='pv';pv.style.marginTop='12px';b.parentNode.after(pv)}pv.innerHTML='';b.hidden=!IMG;if(!IMG)return;
+ const c=redImg();c.style.cssText='max-width:100%;border-radius:10px;border:1px solid var(--bd)';pv.append(c);b.onclick=()=>{const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download=NAME.replace(/\.[^.]+$/,'')+'-redacted.png';a.click()}}
+$('#jr').onclick=()=>{const o={file:NAME,generated:new Date().toISOString(),riskBefore:BASE,riskAfter:AFT,maskMode:$('#mode').value,detections:H.map(h=>({type:h.type,category:h.cat,severity:h.sev,confidence:h.conf,validation:h.note,status:h.st,protected:h.prot}))};
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o,null,2)],{type:'application/json'}));a.download=NAME.replace(/\.[^.]+$/,'')+'-privacy-report.json';a.click()};
+let ORIG=false,SGOK=false;
+const say=m=>{const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(say.t);say.t=setTimeout(()=>t.hidden=true,3000)};
+const sb=(k,s)=>$('#sb-'+k).textContent=s==='RUNNING'?'◐ RUNNING':'● READY';
+const go=v=>$(`nav button[data-v="${v}"]`).click();
+$('#jb').onclick=()=>$('#jv').hidden=!$('#jv').hidden;
+const setTg=o=>{ORIG=o;$('#tgO').setAttribute('aria-pressed',o);$('#tgP').setAttribute('aria-pressed',!o);H.length&&drawDoc()};$('#tgO').onclick=()=>setTg(true);$('#tgP').onclick=()=>setTg(false);
+const RC=['IDENTITY','FINANCIAL','CONTACT','LOCATION','DOCUMENT','OTHER'],catOf=h=>h.type==='ADDRESS'?'LOCATION':h.cat;
+function drawRadar(){const c=170,R=140;const pts=RC.map((k,i)=>{const a=-Math.PI/2+i*Math.PI/3,v=Math.min(1,H.filter(h=>catOf(h)===k&&h.st!=='dismissed'&&!h.prot).reduce((t,h)=>t+h.w,0)/40);return[c+Math.cos(a)*R*v,c+Math.sin(a)*R*v,a,k]});
+ $('#rad').innerHTML=[.25,.5,.75,1].map(k=>`<circle cx="170" cy="170" r="${R*k}" fill="none" stroke="rgba(255,255,255,.1)"/>`).join('')+pts.map(q=>`<line x1="170" y1="170" x2="${c+Math.cos(q[2])*R}" y2="${c+Math.sin(q[2])*R}" stroke="rgba(255,255,255,.1)"/><text x="${c+Math.cos(q[2])*(R+18)}" y="${c+Math.sin(q[2])*(R+18)+3}" fill="#8a96ad" font-size="9" text-anchor="middle">${q[3]}</text>`).join('')+`<polygon points="${pts.map(q=>q[0]+','+q[1]).join(' ')}" fill="rgba(34,211,238,.2)" stroke="#22d3ee" stroke-width="2"/>`;
+ const r=risk();$('#radn').textContent=H.length?(H.some(h=>h.prot)?r+8:r)+' / 100':'—';
+ $('#radt').innerHTML=RC.map(k=>{const a=H.filter(h=>catOf(h)===k&&h.st!=='dismissed');return `<div class="dc" style="cursor:default"><div class="t">${k}<small>${a.length} detected · ${a.filter(h=>h.prot).length} protected · ${a.filter(h=>!h.prot).length} exposed</small></div></div>`}).join('')}
+function inspect(h){const u=h.review&&h.st!=='confirmed';$('#insp').innerHTML=`<div class="glass card"><div class="tag">INSPECTOR</div><p style="margin:10px 0 0;font-size:13px;line-height:1.8">FIELD <b>${h.type}</b><br>CATEGORY <b>${catOf(h)}</b><br>PAGE <b>${PAGE}</b><br>CONFIDENCE <b>${h.conf}%</b><br>VALIDATION <b class="${u?'me':'ok'}">${u?'⚠ UNCERTAIN (format matched; ownership/checksum not verifiable)':'✓ PASSED ('+h.note+')'}</b><br>RISK <b class="${h.sev==='HIGH'?'hi':'me'}">${h.sev}</b><br>WHY DETECTED <b>The value matches the ${h.type} format rule: ${h.note}.</b><br>RECOMMENDATION <b>${h.sev==='HIGH'?'Mask before sharing.':'Mask unless the recipient needs it.'}</b></p></div>`}
+const PAGE='1 (text)';
+function shareGuard(){const o=[...OFF],mc=MINC;OFF.clear();MINC=0;const re=analyze(safeText()).hits;MINC=mc;o.forEach(c=>OFF.add(c));
+ const row=c=>{const a=re.filter(h=>h.cat===c);return `<li>${a.length?'✕':'✓'} ${c} DATA — ${a.length?a.length+' remaining ('+[...new Set(a.map(h=>h.type))].join(', ')+')':'none remaining'}</li>`};
+ SGOK=!re.length;$('#sg').innerHTML=`<div class="tag">SHAREGUARD · FINAL PRIVACY CHECK ON THE OUTPUT TEXT</div><ul style="list-style:none;padding:0;margin:10px 0;font-size:13px">${CATS.map(row).join('')}</ul><div class="st-t ${SGOK?'ok':'hi'}">${SGOK?'✓ SAFE TO SHARE':'▲ REVIEW REQUIRED'}</div>`;
+ $('#result .st-t').textContent=SGOK?'SAFE COPY READY ✓':'REVIEW REQUIRED';$('#sb-priv').textContent=SGOK?'● SECURED':'▲ REVIEW';log(SGOK?'ShareGuard passed':'ShareGuard flagged '+re.length+' remaining item(s)')}
+function clearSession(){session=[];acts=[];H=[];TXT='';IMG=null;WORDS=[];busy=false;renderFiles();renderAct();drawRadar();$('#scam').innerHTML='';$('#work').hidden=true;$('#hero').hidden=false;setCore('ready','PRIVACY SHIELD READY','READY TO PROTECT');$('#sb-priv').textContent='● ACTIVE';go('scan');say('SESSION CLEARED')}
+$('#clr').onclick=clearSession;
+const CMD=[['Scan document',()=>{go('scan');$('#file').click()}],['Open Radar',()=>go('radar')],['Open Vault',()=>go('files')],['View Audit',()=>go('act')],['How it works',()=>go('how')],['Start demo',()=>{go('scan');$('#demo').click()}],['Run ShareGuard',()=>{if(!H.length)return say('Scan a document first');go('scan');shareGuard();$('#sg').scrollIntoView()}],['Chat Shield',()=>go('chat')],['Form Guard',()=>go('form')],['Format lab (validator)',()=>go('val')],['PS-06 coverage',()=>go('ps6')],['Fraud help & contacts',()=>go('help')],['Toggle judge view',()=>$('#jb').click()],['Clear session data',clearSession]];
+let pi=0;const pf=()=>CMD.filter(c=>c[0].toLowerCase().includes($('#pq').value.toLowerCase()));
+function pd(){const l=pf();pi=Math.min(pi,Math.max(0,l.length-1));$('#pl').innerHTML=l.map((c,i)=>`<li role="option" aria-selected="${i===pi}" class="${i===pi?'sel':''}" data-i="${i}">${c[0]}</li>`).join('')}
+function openPal(){$('#pq').value='';pi=0;$('#pal').showModal();pd();$('#pq').focus()}
+addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openPal()}});$('#kb').onclick=openPal;
+$('#pq').oninput=()=>{pi=0;pd()};$('#pq').onkeydown=e=>{const l=pf();if(!l.length)return;if(e.key==='ArrowDown'){pi=(pi+1)%l.length;pd();e.preventDefault()}else if(e.key==='ArrowUp'){pi=(pi-1+l.length)%l.length;pd();e.preventDefault()}else if(e.key==='Enter'){$('#pal').close();l[pi][1]()}};
+$('#pl').onclick=e=>{const c=pf()[e.target.dataset.i];if(c){$('#pal').close();c[1]()}};
+const CATS=['IDENTITY','FINANCIAL','CONTACT','OTHER'];let SCF=[],SCS=0;
+const SCAM=[['OTP / PIN / CVV REQUEST',30,/\b(share|send|tell|give|provide|enter)\b[^.\n]{0,30}\b(otp|pin|cvv|password)\b/i,'Legitimate banks never ask you to share an OTP, PIN or CVV.'],
+['ACCOUNT BLOCK / KYC THREAT',20,/(kyc|account|card|sim)[^.\n]{0,40}(expire|blocked|suspend|deactivat)/i,'Threats of blocking or expiry are a common pressure tactic.'],
+['URGENCY PRESSURE',10,/\b(immediately|urgent(ly)?|last chance|within \d+ ?(hours?|hrs|minutes?|mins?))\b/i,'Artificial deadlines stop you from thinking.'],
+['PRIZE / LOTTERY BAIT',25,/(lottery|you have won|lucky draw|prize money|cashback of)/i,'Unexpected prizes that need a fee are a classic advance-fee scam.'],
+['UPFRONT FEE REQUEST',25,/(processing|registration|clearance|refundable)[^.\n]{0,15}fee/i,'Genuine prizes or loans do not require upfront fees.'],
+['REMOTE-ACCESS APP',30,/(anydesk|teamviewer|quicksupport|rustdesk)/i,'Remote-access apps let scammers see and control your phone.'],
+['AUTHORITY / ARREST THREAT',30,/(arrest|legal action|warrant|digital arrest)|(cbi|customs|police|income tax|trai|rbi)[^.\n]{0,40}(notice|penalty)/i,'Real agencies do not demand money or OTPs over calls or messages.'],
+['SHORTENED LINK',15,/\b(bit\.ly|tinyurl\.com|cutt\.ly|rb\.gy|t\.co|is\.gd)\/\S+/i,'Shortened links hide the real destination.'],
+['SUSPICIOUS DOMAIN',25,/https?:\/\/[^\s\/]*(\.(xyz|top|click|tk|ml|cf|gq|work|icu)\b|\d{1,3}(\.\d{1,3}){3})|https?:\/\/[^\s\/]*(sbi|hdfc|icici|axis|paytm|kyc|upi)[^\s\/]*-[^\s\/]*/i,'Lookalike or unusual domains are used for phishing.'],
+['UNENCRYPTED LINK',8,/http:\/\/\S+/i,'The link does not use HTTPS.']];
+const SOL={AADHAAR:'Share Masked Aadhaar or a Virtual ID (VID) from UIDAI instead of the full number, and lock biometrics at myaadhaar.uidai.gov.in.',PAN:'Share PAN only where legally required; never post it publicly.','BANK ACCOUNT':'Share account details only with verified payees; watch statements if exposed.',CARD:'Never share card number with CVV/OTP. If exposed, block the card via your bank at once.',PHONE:'Expect spam and phishing calls; report suspicious ones on Sanchar Saathi.',EMAIL:'Turn on two-factor authentication and watch for phishing mail.','UPI ID':'Verify the payee name before paying; never approve unexpected collect requests.',OTP:'An OTP is a single-use secret. Never share it, even with "bank staff".','SECRET KEY':'Revoke and rotate this key immediately; never keep keys in shared documents.',PASSPORT:'Share a passport copy only with verified parties and write the purpose on it.'};
+function renderScam(){SCF=SCAM.filter(r=>r[2].test(TXT));SCS=Math.min(100,SCF.reduce((a,r)=>a+r[1],0));
+ const lv=!SCF.length?['✓ NO SCAM SIGNALS','ok']:SCS<30?['⚠ SOME RED FLAGS','me']:SCS<60?['▲ SUSPICIOUS','hi']:['▲ LIKELY SCAM','hi'];
+ const tips=[...new Set(H.map(h=>SOL[h.type]||'Mask '+h.type.toLowerCase()+' before sharing.'))];
+ if(SCF.length)tips.push('Do not click links or call numbers in this message.','Never share OTP/PIN/CVV or install remote-access apps.','If money was lost, call 1930 now and report at cybercrime.gov.in.','Block the sender and report it (Sanchar Saathi / the app).');
+ $('#scam').innerHTML=`<div class="glass card" aria-live="polite"><div class="tag">FRAUD &amp; SCAM SIGNALS (HEURISTIC, NOT A VERDICT)</div><div class="lvl ${lv[1]}" style="margin:8px 0;font-size:16px">${lv[0]} · ${SCS}/100</div>
+ <ul style="margin:0 0 12px;padding-left:18px;font-size:13px">${SCF.map(r=>`<li><b>${r[0]}</b> — ${r[3]}</li>`).join('')||'<li>No known scam patterns found in this text.</li>'}</ul>
+ ${tips.length?`<div class="tag">RECOMMENDED SOLUTION</div><ol style="padding-left:18px;font-size:13px">${tips.map(t=>`<li>${t}</li>`).join('')}</ol>`:''}
+ <div class="row"><button class="btn" id="hlp">HELP &amp; CONTACTS</button>${SCF.length?'<button class="btn" id="csum">COPY REPORT SUMMARY</button>':''}</div></div>`;
+ $('#hlp').onclick=()=>go('help');const c=$('#csum');if(c)c.onclick=async()=>{const t=`Suspected scam report (generated ${new Date().toLocaleString()})\nSignals: ${SCF.map(r=>r[0]).join('; ')}\nScam signal score: ${SCS}/100\nAdd: sender number/ID, links, amounts, transaction IDs, screenshots.`;try{await navigator.clipboard.writeText(t);say('SUMMARY COPIED')}catch(e){say('COPY FAILED')}};
+ log(SCF.length?SCF.length+' scam signal(s) found':'No scam signals found')}
+let MINC=0;$('#strict').onchange=e=>MINC=+e.target.value;
+const MOPT=$('#mode').innerHTML;$$('.msel').forEach(e=>e.innerHTML=MOPT);
+const PFX={'BANK ACCOUNT':'Account No: ','DATE OF BIRTH':'DOB: ',ADDRESS:'Address: '};
+function checkAll(v){v=v.trim();return RULES.map(r=>{const m=new RegExp(r.re.source,r.re.flags.replace('g','')).exec((PFX[r.type]||'')+v);const fmt=!!m&&m[0]===v;return{r,fmt,ok:fmt&&r.chk(v)}})}
+function vRender(){const v=$('#vin').value.trim();if(!v){$('#vout').innerHTML='<p class="sub">Enter a value or pick an example.</p>';return}
+ const h=checkAll(v).filter(x=>x.fmt);$('#vout').innerHTML=h.length?h.map(x=>`<div class="dc" style="cursor:default"><div class="t">${x.r.type}<small>PATTERN ✓ · ${x.r.note}: ${x.ok?'✓ PASSED':'✕ FAILED'}</small></div><span class="b ${x.ok?(x.r.conf<85?'me':'hi'):'ok'}">${x.ok?(x.r.conf<85?'⚠ FLAGGED · NEEDS REVIEW':'FLAGGED · VALIDATED'):'REJECTED AS FALSE ALERT'}</span></div>`).join(''):'<div class="dc" style="cursor:default"><div class="t">NO KNOWN SENSITIVE FORMAT<small>This value would not be flagged.</small></div><span class="b ok">✓ NOT FLAGGED</span></div>'}
+$('#vex').innerHTML=[ag('23456789012'),'2345 6789 0123','ABCPE1234F','ABCDE1234F','4111 1111 1111 1111','4111 1111 1111 1112','ABCD0123456','9876543210','20260413'].map(x=>`<button class="mini">${x}</button>`).join('');
+$$('#vex button').forEach(b=>b.onclick=()=>{$('#vin').value=b.textContent;vRender()});$('#vin').oninput=vRender;vRender();
+const CHATS='Rahul: bhai my number is 9812345670\nRahul: send money to a/c 004512367890123, IFSC ACME0004512\nRahul: PAN ABCPE1234F, mail me at rahul.demo@example.com\n';
+function cRender(){const t=$('#cin').value,h=analyze(t).hits;let o='',p=0;for(const x of h){o+=t.slice(p,x.start)+maskOf(x,$('#cmode').value);p=x.end}o+=t.slice(p);$('#cout').textContent=o;const c={};h.forEach(x=>c[x.type]=(c[x.type]||0)+1);
+ $('#csumm').textContent=t.trim()?(h.length?h.length+' PROTECTED · '+Object.entries(c).map(e=>e[0]+' ×'+e[1]).join(' · '):'✓ NO SENSITIVE DATA FOUND'):''}
+$('#cin').oninput=cRender;$('#cmode').onchange=cRender;$('#csamp').onclick=()=>{$('#cin').value=CHATS;cRender()};
+$('#ccp').onclick=async()=>{try{await navigator.clipboard.writeText($('#cout').textContent);say('COPIED')}catch(e){say('COPY FAILED')}};
+const FF=['Full name','Aadhaar number','PAN','Mobile number','Email','Bank account number','IFSC','Address'];
+$('#ffs').innerHTML=FF.map((l,i)=>`<label class="note" for="ff${i}">${l.toUpperCase()}</label><div class="row" style="flex-wrap:nowrap"><input class="inp ff" id="ff${i}" data-i="${i}" autocomplete="off"><span class="b" id="fb${i}" style="min-width:170px;text-align:center"></span></div>`).join('');
+function fCheck(i){const v=$('#ff'+i).value.trim(),b=$('#fb'+i);b.className='b';b.textContent='';if(!v)return null;if(i===0){b.textContent='ℹ NAME · NOT AUTO-DETECTED';return null}
+ const R=checkAll(v),ok=R.find(x=>x.ok),f=R.find(x=>x.fmt);
+ if(ok){b.textContent=(ok.r.conf<85?'⚠ ':'✓ ')+ok.r.type+' · SENSITIVE';b.className='b '+(ok.r.sev==='HIGH'?'hi':'me');return ok.r}
+ b.textContent=f?'✕ '+f.r.type+' FORMAT, INVALID':'— NOT RECOGNISED';b.className='b '+(f?'me':'ok');return null}
+$$('.ff').forEach(e=>e.oninput=()=>fCheck(+e.dataset.i));
+$('#fgo').onclick=()=>{let n=0;const out=FF.map((l,i)=>{const v=$('#ff'+i).value.trim();if(!v)return null;const r=fCheck(i);if(r){n++;return l+': '+maskOf({type:r.type,val:v,id:i},$('#fmode').value)}return l+': '+v}).filter(Boolean).join('\n');
+ $('#fout').textContent=out||'Fill in the form first.';$('#fsum').textContent=out?n+' FIELD(S) PROTECTED':''};
+$('#fcp').onclick=async()=>{try{await navigator.clipboard.writeText($('#fout').textContent);say('COPIED')}catch(e){say('COPY FAILED')}};
+$('#req').innerHTML=[['Detect sensitive data in text','Scan (paste or .txt), Chat Shield, Form Guard'],['Detect it in images','Scan → PNG/JPG upload with Tesseract OCR (needs internet to load the engine)'],['Mask or remove before sharing','Five modes: block, [REDACTED], partial, token, remove entirely'],['Recognise Indian ID and financial formats','Aadhaar, PAN, passport, voter ID, driving licence, DOB, phone, IFSC, bank a/c, card, UPI, GSTIN'],['Validate to reduce false alerts','Verhoeff, Luhn, PAN holder code, review queue, strictness setting, Format lab'],['Cleaned output the user can share','Safe-text download/copy, redacted PNG, ShareGuard re-scan of the output'],['Summary of what was found and protected','Privacy report, JSON export, Radar, Vault, Audit']].map(r=>`<div class="dc" style="cursor:default"><div class="t">✓ ${r[0]}<small>${r[1]}</small></div></div>`).join('');
+$('#fmt').innerHTML='<tr><th>TYPE</th><th>CATEGORY</th><th>CHECK</th><th>STATUS</th></tr>'+RULES.map(r=>`<tr><td>${r.type}</td><td>${r.cat}</td><td>${r.note}</td><td>${r.conf>=85?'✓ Validated':'⚠ Review'}</td></tr>`).join('');
+/* ---------- document ---------- */
+function drawDoc(final){let o='',p=0;for(const h of H){o+=esc(TXT.slice(p,h.start));const m=h.prot?maskOf(h,$('#mode').value):h.val;
+ o+=`<span class="hit ${h.cls||''}" id="h${h.id}" data-t="${h.type}">${esc(h.prot&&!ORIG?m:h.val)}</span>`;p=h.end}o+=esc(TXT.slice(p));$('#doc').innerHTML=o}
+const safeText=()=>{let o='',p=0;for(const h of H){o+=TXT.slice(p,h.start)+(h.prot?maskOf(h,$('#mode').value):h.val);p=h.end}return o+TXT.slice(p)};
+const STEPS=['READING DOCUMENT','EXTRACTING CONTENT','SEARCHING FOR IDENTIFIERS','VALIDATING PATTERNS','CHECKING RISK','PREPARING PROTECTION'];
+function drawCards(){$('#det').innerHTML=H.filter(h=>h.st!=='dismissed').map(h=>`<div class="dc" tabindex="0" data-i="${h.id}" role="button" aria-label="${h.type} ${h.sev}, focus in document"><input type="checkbox" class="sel" ${h.sel!==false?'checked':''} aria-label="Select ${h.type}"><div class="t">${h.type}<small>${h.note} · ${h.conf}% · PATTERN ✓ FORMAT ✓ ${h.review&&h.st!=='confirmed'?'VALID ⚠':'VALID ✓'}</small></div><span class="b ${h.sev==='HIGH'?'hi':'me'}">${h.sev}</span>${h.prot?'<span class="b ok">PROTECTED ✓</span>':h.review&&h.st!=='confirmed'?`<span class="b me">⚠ REVIEW</span><button class="mini ok" data-a="c">CONFIRM</button><button class="mini" data-a="d">DISMISS</button>`:'<span class="b ok">✓ VALIDATED</span>'}</div>`).join('');
+ $$('.dc').forEach(c=>{const h=H[c.dataset.i];const f=()=>{inspect(h);$$('.hit').forEach(x=>x.classList.remove('foc'));const e=$('#h'+h.id);e.classList.add('foc');e.scrollIntoView({block:'center',behavior:RM?'auto':'smooth'})};c.onclick=e=>{const a=e.target.dataset.a;if(e.target.classList.contains('sel'))return h.sel=e.target.checked;if(a==='c'){h.st='confirmed';drawCards()}else if(a==='d'){h.st='dismissed';h.cls='';drawDoc();drawCards();risk();log(h.type+' dismissed by user')}else f()};c.onkeydown=e=>e.key==='Enter'&&e.target===c&&f()})}
+const risk=()=>Math.min(100,H.filter(h=>h.st!=='dismissed'&&!h.prot).reduce((a,h)=>a+h.w,0));
+/* ---------- main flow ---------- */
+async function run(text,name,auto,img){if(busy)return;busy=true;skip=false;TXT=text;NAME=name;IMG=img||null;if(!img)WORDS=[];sb('det','RUNNING');sb('val','RUNNING');$('#scam').innerHTML='';$('#herr').hidden=true;
+ $('#hero').hidden=true;$('#work').hidden=false;$('#result').hidden=$('#rep').hidden=$('#intel').hidden=$('#clean').hidden=true;$('#proc').hidden=false;$('#nn').hidden=false;
+ $('#docname').textContent=name.toUpperCase();H=[];$('#doc').textContent=text;scrollTo(0,0);
+ setCore('scan','ANALYZING DOCUMENT','0%');log('Document scanned: '+name);
+ const res=analyze(text);H=res.hits;const nodes=[];$('#steps').innerHTML=STEPS.map((s,i)=>`<li id="s${i}"><span>${s}</span><span></span></li>`).join('');
+ for(let i=0;i<STEPS.length;i++){const li=$('#s'+i);li.className='on';li.lastChild.textContent='';const set=p=>{$('#pb').style.width=p+'%';$$('.st-s').forEach(e=>e.textContent=p+'%')};
+  if(i===2){const dur=Math.max(1.4,H.length*.55);$('#beam').style.setProperty('--d',(skip?.3:dur)+'s');$('#beam').classList.remove('on');void $('#beam').offsetWidth;$('#beam').classList.add('on');drawDoc();
+   for(const h of H){await sleep(dur*1000/(H.length+1)*.8);const e=$('#h'+h.id);e.classList.add('seen');await sleep(150);e.className='hit lock';h.cls='lock'}await sleep(300);$('#beam').classList.remove('on')}
+  else await sleep(450);
+  set(Math.round((i+1)/STEPS.length*100));li.className='ok';li.lastChild.textContent='✓ VERIFIED'}
+ sb('det','READY');sb('val','READY');log(H.length+' sensitive elements detected');log('Validation completed ('+res.rej+' false alerts filtered)');
+ $('#proc').hidden=true;renderScam();
+ if(!H.length){setCore('clean','✓ NO SENSITIVE DATA FOUND','CALM');$('#clean').hidden=false;busy=false;return}
+ BASE=risk();$('#intel').hidden=false;drawCards();drawRadar();setCore('detect',String(H.length).padStart(2,'0')+' SENSITIVE ELEMENTS FOUND','REVIEW & VERIFY');
+ $('#rcnt').textContent=CATS.map(c=>H.filter(h=>h.cat===c).length+' '+c.toLowerCase()).join(' · ');
+ setRing(BASE);await count($('#rn'),0,BASE,1200);
+ $('#pall').onclick=()=>protect(H.filter(h=>h.st!=='dismissed'));$('#psel').onclick=()=>protect(H.filter(h=>h.st!=='dismissed'&&h.sel!==false));
+ if(auto){await sleep(1500);protect(H.filter(h=>h.st!=='dismissed'))}}
+function fly(el){if(RM||skip)return;const a=el.getBoundingClientRect(),t=tgt(),d=document.createElement('div');d.className='dot';d.style.left=a.left+a.width/2+'px';d.style.top=a.top+a.height/2+'px';document.body.append(d);
+ d.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${t.x-a.left-a.width/2}px,${t.y-a.top-a.height/2}px) scale(.3)`,opacity:.2}],{duration:1100,easing:'cubic-bezier(.5,0,.8,.4)'}).onfinish=()=>d.remove()}
+async function protect(list){if(!list.length||busy&&$('#pall').disabled)return;$('#pall').disabled=$('#psel').disabled=true;
+ const b=document.createElement('div');b.className='ban';b.textContent='SECURITY PROTOCOL ACTIVATED';document.body.append(b);setCore('absorb','SECURITY PROTOCOL ACTIVATED','PROTECTING');await sleep(1100);b.remove();
+ sb('red','RUNNING');const chars='█▓▒░#@%&*';
+ for(const h of list){const e=$('#h'+h.id);e.className='hit seen';await sleep(250);e.className='hit lock';
+  const t0=performance.now();while(performance.now()-t0<(skip?40:550)){e.textContent=h.val.replace(/./g,(c,i)=>c===' '?' ':chars[Math.random()*chars.length|0]);await new Promise(r=>setTimeout(r,45))}
+  h.prot=true;e.textContent=maskOf(h,$('#mode').value);e.className='hit done';h.cls='done';fly(e);await sleep(300)}
+ sb('red','READY');await sleep(900);drawCards();
+ const aft=H.some(h=>h.prot)?Math.max(8,risk()+8):risk();
+ setCore('safe','PRIVACY SHIELD ACTIVE','SAFE TO SHARE');wave();
+ $('#rcnt').textContent=String(list.length).padStart(2,'0')+' DATA ITEMS PROTECTED';
+ await Promise.all([count($('#rn'),BASE,aft,1800),(async()=>{setRing(aft);drawRadar()})()]);
+ log(list.length+' elements protected');log('Safe copy generated');
+ session.push({name:NAME,n:list.length,a:BASE,b:aft,ts:new Date().toLocaleString()});renderFiles();
+ $('#rcnt').textContent=`RISK REDUCED ${BASE} → ${aft}`;
+ $('#pc').textContent=safeText();$('#oc').textContent=TXT;imgOut();shareGuard();$('#result').hidden=false;$('#result').scrollIntoView({behavior:RM?'auto':'smooth'});report(aft);busy=false}
+function wave(){if(RM)return;const t=tgt(),w=document.createElement('div');w.className='wave';w.style.left=t.x+'px';w.style.top=t.y+'px';document.body.append(w);w.animate([{transform:'scale(1)',opacity:.9},{transform:'scale(60)',opacity:0}],{duration:1600,easing:'ease-out'}).onfinish=()=>w.remove()}
+function report(aft){AFT=aft;const g=c=>{const a=H.filter(h=>h.cat===c);return a.length?`<div class="glass card"><div class="tag">${c} DATA</div><div class="st-t" style="margin:6px 0">${a.length} detected<br>${a.filter(h=>h.prot).length} protected</div></div>`:''};
+ $('#repg').innerHTML=`<div class="glass card"><div class="tag">DOCUMENT SCANNED</div><div class="st-t ok" style="margin-top:6px">✓ ${esc(NAME)}</div></div>`+CATS.map(g).join('')+`<div class="glass card"><div class="tag">PRIVACY RISK</div><div class="st-t" id="rr" style="margin:6px 0">${BASE} → ${aft}</div></div><div class="glass card"><div class="tag">STATUS</div><div class="st-t ${SGOK?'ok':'hi'}" style="margin-top:6px">${SGOK?'✓ SAFE TO SHARE':'▲ REVIEW REQUIRED'}</div></div>`}
+$('#vr').onclick=()=>{$('#rep').hidden=false;$('#rep').scrollIntoView({behavior:RM?'auto':'smooth'})};
+$('#sl').oninput=e=>$('#cmp').style.setProperty('--c',(100-e.target.value)+'%');
+$('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(safeText());$('#cp').textContent='COPIED ✓'}catch(e){$('#cp').textContent='COPY FAILED'}};
+$('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([safeText()],{type:'text/plain'}));a.download=NAME.replace(/\.[^.]+$/,'')+'-safe.txt';a.click()};
+/* ---------- neural net (2D) ---------- */
+(function(){const c=$('#nn'),x=c.getContext('2d'),L=['OCR','PATTERN','VALIDATION','RISK','PROTECTION'],N=14;let t=0;
+ function f(){requestAnimationFrame(f);if(c.offsetParent===null||document.hidden)return;const w=c.width=c.clientWidth*devicePixelRatio,h=c.height=170*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio);const W=w/devicePixelRatio,Hh=170;t+=RM?.002:.012;
+  const p=[...Array(N)].map((_,i)=>{const a=t+i*6.283/N,r=45+(i%3)*10;return[W/2+Math.cos(a)*r*1.6,Hh/2+Math.sin(a)*r*.8]});
+  x.strokeStyle='rgba(34,211,238,.18)';p.forEach((a,i)=>p.forEach((b,j)=>{if(j>i&&(i+j)%3===0){x.beginPath();x.moveTo(...a);x.lineTo(...b);x.stroke();const k=(t*2+i*.3)%1;x.fillStyle='#8b5cf6';x.fillRect(a[0]+(b[0]-a[0])*k-1.5,a[1]+(b[1]-a[1])*k-1.5,3,3)}}));
+  p.forEach((a,i)=>{x.fillStyle=Math.sin(t*3+i)>.3?'#22d3ee':'#3b82f6';x.beginPath();x.arc(a[0],a[1],3,0,7);x.fill()});
+  x.fillStyle='#e7ecf5';x.font='600 10px system-ui';x.textAlign='center';x.fillText('ANALYZING',W/2,Hh/2+3);x.fillStyle='#8a96ad';x.font='9px system-ui';L.forEach((l,i)=>{const a=-1.57+i*1.2566;x.fillText(l,W/2+Math.cos(a)*(W*.42),Hh/2+Math.sin(a)*70)})}f()})();
+/* ---------- Three.js core + environment ---------- */
+(function(){const cv=$('#gl');let r;try{r=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true})}catch(e){}
+ if(!r){document.body.classList.add('nogl');return}
+ r.setPixelRatio(Math.min(devicePixelRatio,1.5));const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(50,1,.1,100);cam.position.z=7;
+ const M=(c,o,w)=>new THREE.MeshBasicMaterial({color:c,wireframe:!!w,transparent:true,opacity:o});
+ const core=new THREE.Group();sc.add(core);const spin=new THREE.Group();core.add(spin);
+ const ico=new THREE.Mesh(new THREE.IcosahedronGeometry(1.6,1),M(0x22d3ee,.32,1)),inner=new THREE.Mesh(new THREE.OctahedronGeometry(.7),M(0x8b5cf6,.7,1)),shell=new THREE.Mesh(new THREE.SphereGeometry(1.75,32,32),M(0x3b82f6,.07));
+ spin.add(ico,inner,shell);
+ const rings=[0,1,2].map(i=>{const m=new THREE.Mesh(new THREE.TorusGeometry(2.1+i*.3,.012,8,128),M(i?0x3b82f6:0x22d3ee,.6));m.rotation.set(i*1.1,i*.6,0);core.add(m);return m});
+ const scan=new THREE.Mesh(new THREE.TorusGeometry(2.9,.02,8,128),M(0x22d3ee,0));core.add(scan);
+ const mob=innerWidth<860,N=mob?260:520,pg=new THREE.Group(),pos=new Float32Array(N*3);
+ for(let i=0;i<N;i++){const a=Math.random()*6.283,b=Math.acos(2*Math.random()-1),rr=1.1+Math.random()*1.9;pos.set([rr*Math.sin(b)*Math.cos(a),rr*Math.cos(b),rr*Math.sin(b)*Math.sin(a)],i*3)}
+ const pgeo=new THREE.BufferGeometry();pgeo.setAttribute('position',new THREE.BufferAttribute(pos,3));pg.add(new THREE.Points(pgeo,new THREE.PointsMaterial({color:0x7dd3fc,size:.04,transparent:true,opacity:.85})));
+ const lp=[];for(let i=0;i<70;i++){const a=i*3%N,b=(i*7+11)%N;lp.push(pos[a*3],pos[a*3+1],pos[a*3+2],pos[b*3],pos[b*3+1],pos[b*3+2])}
+ const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lp,3));pg.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0x22d3ee,transparent:true,opacity:.15})));core.add(pg);
+ const grid=new THREE.GridHelper(50,50,0x155e75,0x0e2a3a);grid.position.y=-4;grid.material.transparent=true;grid.material.opacity=.35;sc.add(grid);
+ const dn=300,dp=new Float32Array(dn*3);for(let i=0;i<dn;i++)dp.set([(Math.random()-.5)*30,Math.random()*14-4,(Math.random()-.5)*20-4],i*3);
+ const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.BufferAttribute(dp,3));const dust=new THREE.Points(dg,new THREE.PointsMaterial({color:0x3b82f6,size:.035,transparent:true,opacity:.5}));sc.add(dust);
+ const SP={ready:1,drag:3.2,scan:5,detect:2.5,absorb:6,safe:.5,clean:.4},mouse={x:0,y:0};let sp=1,ps=1,t=0,W=1,Hh=1;
+ addEventListener('pointermove',e=>{mouse.x=e.clientX/innerWidth*2-1;mouse.y=e.clientY/innerHeight*2-1});
+ const rs=()=>{W=innerWidth;Hh=innerHeight;r.setSize(W,Hh,false);cam.aspect=W/Hh;cam.updateProjectionMatrix()};rs();addEventListener('resize',rs);
+ const cols={safe:new THREE.Color(0x34d399),clean:new THREE.Color(0x34d399),other:new THREE.Color(0x22d3ee)};
+ (function f(){requestAnimationFrame(f);if(document.hidden)return;t+=.016;
+  sp+=((SP[cs]||1)*(RM?.3:1)-sp)*.04;
+  const a=anchor().getBoundingClientRect(),wpp=2*7*Math.tan(.4363)/Hh,cx=(a.left+a.width/2-W/2)*wpp,cy=-(a.top+a.height*(anchor().id==='aHero'?.42:.5)-Hh/2)*wpp,s=Math.max(.15,Math.min(a.width,a.height*1.1)*wpp/5.8);
+  core.position.x+=(cx+mouse.x*.15-core.position.x)*.08;core.position.y+=(cy-mouse.y*.1-core.position.y)*.08;core.scale.setScalar(core.scale.x+(s*(1+Math.sin(t*1.5)*.02)-core.scale.x)*.08);
+  spin.rotation.y+=.003*sp;spin.rotation.x=mouse.y*.25;inner.rotation.y-=.01*sp;inner.rotation.x+=.006*sp;
+  rings.forEach((m,i)=>{m.rotation.z+=.003*sp*(i+1);m.rotation.x+=.0015*sp*(i%2?-1:1);m.rotation.y+=mouse.x*.002});
+  const ab=cs==='absorb'||cs==='safe'||cs==='clean';ps+=((cs==='absorb'?.25:cs==='safe'?.55:cs==='drag'?1.15:1)-ps)*.04;pg.scale.setScalar(ps);pg.rotation.y+=.004*sp;pg.rotation.z+=.0015*sp;
+  scan.material.opacity+=(((cs==='scan'||cs==='drag')?.7:0)-scan.material.opacity)*.1;scan.rotation.x=Math.PI/2+Math.sin(t*(1+sp*.3))*.5;scan.rotation.y+=.02*sp;
+  const col=(cs==='safe'||cs==='clean')?cols.safe:cols.other;ico.material.color.lerp(col,.05);rings[0].material.color.lerp(col,.05);
+  grid.position.z=(t*.5)%1;dust.position.y=(t*.15)%2;dust.rotation.y=t*.01;
+  r.render(sc,cam)})()})();
+renderAct();
+</script></body></html>
