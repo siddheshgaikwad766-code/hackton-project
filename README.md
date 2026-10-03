@@ -1,2 +1,2 @@
-# hackton-project
-AI powered scan detection prototype
+# team pralay hackton-project
+
