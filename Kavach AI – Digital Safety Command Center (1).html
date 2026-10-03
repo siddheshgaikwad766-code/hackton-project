@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Kavach AI – Digital Safety Command Center</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#050b1a;--card:rgba(255,255,255,.055);--bd:rgba(120,170,255,.18);--tx:#e6edff;--mu:#8fa3c7;--bl:#38bdf8;--pu:#a78bfa;--g:#22c55e;--a:#f59e0b;--r:#ef4444;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#1b2a6b55,transparent),radial-gradient(900px 500px at -10% 30%,#0e7490333,transparent),var(--bg);color:var(--tx);font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:56px 56px;opacity:.12;mask-image:radial-gradient(circle at 50% 30%,#000,transparent 70%);pointer-events:none}
+nav{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:6px;padding:10px 18px;background:rgba(5,11,26,.8);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+.brand{font-weight:800;font-size:19px;display:flex;gap:8px;align-items:center;margin-right:auto;letter-spacing:.3px}.brand span{background:linear-gradient(90deg,var(--bl),var(--pu));-webkit-background-clip:text;color:transparent}
+nav button{background:none;border:0;color:var(--mu);padding:8px 12px;border-radius:10px;cursor:pointer;font:600 13px inherit}nav button:hover{color:#fff}nav button.on{background:linear-gradient(135deg,#2563eb55,#7c3aed55);color:#fff}
+main{max-width:1060px;margin:auto;padding:22px 18px 90px;position:relative}.pg{display:none;animation:in .4s}.pg.on{display:block}@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:20px;backdrop-filter:blur(10px)}.grid{display:grid;gap:14px}.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+h1{font-size:clamp(30px,6vw,54px);line-height:1.08;margin:.2em 0}h2{margin:.2em 0 .6em}h3{margin:.2em 0}h4{margin:18px 0 8px;color:var(--bl);font-size:13px;text-transform:uppercase;letter-spacing:1px}
+.grad{background:linear-gradient(90deg,var(--bl),var(--pu),#f472b6);-webkit-background-clip:text;color:transparent}.mu{color:var(--mu)}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:center;padding:20px 0 30px}@media(max-width:760px){.hero{grid-template-columns:1fr}}
+.shield{width:min(280px,70vw);margin:auto;position:relative;filter:drop-shadow(0 0 30px #38bdf866);animation:pulse 3s infinite}@keyframes pulse{50%{transform:scale(1.04);filter:drop-shadow(0 0 48px #a78bfa88)}}
+.scan{position:absolute;left:12%;right:12%;height:3px;background:linear-gradient(90deg,transparent,var(--bl),transparent);animation:sc 2.4s infinite alternate;top:20%}@keyframes sc{to{top:75%}}
+.btn{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:0;padding:11px 20px;border-radius:12px;font:700 14px inherit;cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px #4f46e566}.btn.alt{background:var(--card);border:1px solid var(--bd)}
+textarea,input[type=text]{width:100%;background:#0a1330;border:1px solid var(--bd);color:var(--tx);border-radius:12px;padding:12px;font:inherit;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.chip{padding:5px 12px;border-radius:99px;background:var(--card);border:1px solid var(--bd);color:var(--mu);cursor:pointer;font-size:13px}.chip.on{color:#fff;border-color:var(--bl)}
+.stat b{font-size:30px;display:block}.mod{cursor:pointer;transition:.25s}.mod:hover{transform:translateY(-4px);border-color:var(--bl)}.mod i{font-style:normal;font-size:30px}
+.res{margin-top:18px;border:1px solid var(--c);border-radius:18px;padding:20px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 12%,transparent),var(--card));animation:in .5s}
+.top{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.ring{width:96px;height:96px;position:relative}.ring svg{transform:rotate(-90deg)}.ring circle{fill:none;stroke-width:3.2}.ring .bg{stroke:#ffffff18}.ring .fg{stroke:var(--c);stroke-linecap:round;transition:stroke-dasharray 1.2s}.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:26px}
+.badge{background:var(--c);color:#000;font-weight:800;padding:3px 12px;border-radius:99px;font-size:12px;letter-spacing:.8px}
+.hl{background:#0a1330;padding:14px;border-radius:12px;line-height:2;white-space:pre-wrap;word-break:break-word}.hl mark{border-radius:5px;padding:2px 5px;color:#fff}.hl .h{background:#ef444499}.hl .s{background:#f59e0b88}.hl .g{background:#22c55e66}
+.f{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;margin:5px 0;border-radius:10px;background:#ffffff0a;border-left:3px solid var(--g)}.f.h{border-color:var(--r)}.f.s{border-color:var(--a)}.f em{font-style:normal;font-weight:700}.f i{color:var(--mu)}
+.bar{margin:8px 0}.bar div{height:9px;border-radius:9px;background:#ffffff14;overflow:hidden}.bar span{display:block;height:100%;width:0;transition:width 1.1s;background:linear-gradient(90deg,var(--g),var(--a),var(--r))}
+.ex{background:#0a1330;padding:12px;border-radius:12px}.chat{max-width:420px;background:#0a1330;border-radius:16px;padding:14px}.bub{background:#1e293b;border-radius:14px 14px 14px 4px;padding:10px 14px;margin-bottom:10px}.bub a{color:var(--bl)}
+.drop{border:2px dashed var(--bd);border-radius:16px;padding:26px;text-align:center;cursor:pointer;color:var(--mu)}.drop:hover{border-color:var(--bl)}
+table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid var(--bd);text-align:left;font-size:14px}code{background:#0a1330;padding:2px 6px;border-radius:6px;word-break:break-all}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%}
+@media(max-width:760px){nav{position:fixed;top:auto;bottom:0;left:0;right:0;border-top:1px solid var(--bd);border-bottom:0;overflow-x:auto;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}.brand{display:none}nav button{white-space:nowrap}:root{padding-bottom:0}}
+</style></head><body>
+<nav><div class="brand">🛡️ <span>Kavach AI</span></div>
+<button data-t="home" class="on">Home</button><button data-t="scam">Scam</button><button data-t="url">PhishGuard</button><button data-t="qr">CyberScan QR</button><button data-t="priv">PrivacyShield</button><button data-t="dash">Dashboard</button></nav>
+<main>
+<section class="pg on" id="home">
+<div class="hero"><div><span class="mu">KAVACH (कवच) = ARMOUR · YOUR DIGITAL SAFETY COMMAND CENTER</span><h1>Detect. Protect.<br><span class="grad">Share Safely.</span></h1>
+<p class="mu">One explainable AI shield for UPI scams, phishing links and personal data leaks — built for Indian users, works in English, हिंदी and Hinglish, and runs 100% on your device.</p>
+<div class="row"><button class="btn" onclick="go('scam')">Analyze Now</button><button class="btn alt" onclick="go('priv')">Protect a Document</button></div></div>
+<div class="shield"><div class="scan"></div><svg viewBox="0 0 200 230"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M100 8 182 40v66c0 56-36 96-82 116C54 202 18 162 18 106V40z" fill="#0a1330" stroke="url(#gg)" stroke-width="5"/><path d="M62 112l28 28 52-58" fill="none" stroke="url(#gg)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<div class="grid g3"><div class="card mod" onclick="go('scam')"><i>🛡️</i><h3>Scam Detection</h3><p class="mu">Fake KYC, refund & QR scams. Evidence highlighted word-by-word.</p></div><div class="card mod" onclick="go('url')"><i>🔗</i><h3>Phishing Protection</h3><p class="mu">Typosquats, lookalikes, misleading subdomains, risky TLDs.</p></div><div class="card mod" onclick="go('priv')"><i>🔐</i><h3>Privacy Shield</h3><p class="mu">Aadhaar (checksum-verified), PAN, cards, UPI — masked before you share.</p></div></div>
+<h2 style="margin-top:30px">⚡ One-click hackathon demos <span class="mu" style="font-size:14px">(runs the real engines)</span></h2>
+<div class="row"><button class="btn alt" onclick="demo('kyc')">Fake KYC Demo</button><button class="btn alt" onclick="demo('refund')">Refund Scam Demo</button><button class="btn alt" onclick="demo('qr')">UPI QR Demo</button><button class="btn alt" onclick="demo('url')">Phishing URL Demo</button><button class="btn alt" onclick="demo('pii')">Indian ID Privacy Demo</button></div>
+<div class="grid g3" style="margin-top:14px"><div class="card"><h3>💬 Chat / browser-extension demo</h3><div class="chat"><div class="bub">Dear customer, your SBI KYC is expiring today! Update now: <a href="#" onclick="return false">http://sbi-secure-login.top/kyc</a></div><button class="btn" onclick="chatCheck()">Check Link</button></div></div><div class="card" id="chatRes" style="grid-column:span 2"><span class="mu">Click “Check Link” – the same engine a Chrome extension would call.</span></div></div>
+<h2 style="margin-top:30px">🧭 Security Center</h2>
+<div class="grid g4"><div class="card">🔑<h3>OTP / PIN</h3><p class="mu">Never share OTP or UPI PIN. PIN is only for <b>sending</b> money, never receiving.</p></div><div class="card">📲<h3>QR rule</h3><p class="mu">Scanning a QR never <i>receives</i> money. If someone says “scan to get refund” – it's a scam.</p></div><div class="card">🏦<h3>KYC</h3><p class="mu">Banks don't do KYC via SMS links. Visit the branch or official app.</p></div><div class="card">📁<h3>Share safely</h3><p class="mu">Mask Aadhaar/PAN before sending copies. Add purpose: “for X only”.</p></div></div>
+</section>
+
+<section class="pg" id="scam"><h2>🛡️ UPI Scam Detector <span class="mu" style="font-size:14px">PS-04</span></h2><div class="card">
+<textarea id="sIn" rows="5" placeholder="Paste SMS / WhatsApp / email… e.g. आपका KYC expire हो गया है, तुरंत verify करें"></textarea>
+<div class="row"><button class="btn" onclick="runScam()">Analyze Message</button><button class="btn alt" onclick="demo('kyc')">Fake KYC sample</button><button class="btn alt" onclick="demo('refund')">Refund sample</button><button class="btn alt" onclick="sIn.value='Your electricity bill is paid. Thank you. Never share OTP with anyone.';runScam()">Safe sample</button></div><div id="sOut"></div></div></section>
+
+<section class="pg" id="url"><h2>🔗 PhishGuard URL Scanner <span class="mu" style="font-size:14px">PS-05</span></h2><div class="card">
+<input type="text" id="uIn" placeholder="https://paytm.verify-login.xyz/kyc  — or paste a message containing a link">
+<div class="row"><button class="btn" onclick="runUrl()">Scan URL</button><button class="btn alt" onclick="uIn.value='http://amaz0n-login.example.com/signin';runUrl()">amaz0n lookalike</button><button class="btn alt" onclick="uIn.value='https://www.amazon.in/gp/help/customer/display.html?nodeId=201889410&ref_=footer_cs&very=long&query=ok';runUrl()">Long legit URL</button></div>
+<p class="mu" style="font-size:12px">Domain age / live reputation need a server-side WHOIS feed – the FastAPI plug-in point; this build scores structure, brand and lexical signals.</p><div id="uOut"></div></div></section>
+
+<section class="pg" id="qr"><h2>📲 CyberScan QR <span class="mu" style="font-size:14px">Unified</span></h2><div class="card">
+<label class="drop" style="display:block">📷 Upload a QR image (decoded in-browser, never uploaded)<input type="file" id="qF" accept="image/*" hidden></label>
+<p class="mu">…or paste a decoded payload to simulate a scan:</p><input type="text" id="qIn" placeholder="upi://pay?pa=refund.support786@okaxis&pn=Paytm%20Support&am=1&tn=Refund%20KYC">
+<div class="row"><button class="btn" onclick="runQr(qIn.value)">Analyze Payload</button><button class="btn alt" onclick="demo('qr')">UPI QR demo</button></div><div id="qOut"></div></div></section>
+
+<section class="pg" id="priv"><h2>🔐 PrivacyShield <span class="mu" style="font-size:14px">PS-06</span></h2><div class="card">
+<textarea id="pIn" rows="6" placeholder="Paste text containing personal data, or load a .txt/.csv file"></textarea>
+<div class="row"><label class="btn alt">Load .txt file<input type="file" id="pF" accept=".txt,.csv,.json,.md" hidden></label>
+<span class="chip on" data-m="mask">Mask</span><span class="chip" data-m="remove">Remove</span><span class="chip" data-m="redact">[REDACTED]</span></div>
+<div class="row"><button class="btn" onclick="runPriv()">Protect Document</button><button class="btn alt" onclick="demo('pii')">Indian ID sample</button></div>
+<p class="mu" style="font-size:12px">PDF / DOCX / image OCR need the backend parser (pdfplumber, python-docx, Tesseract) – text files work fully here. Nothing is stored or sent anywhere.</p><div id="pOut"></div></div></section>
+
+<section class="pg" id="dash"><h2>📊 Security Dashboard</h2><div class="grid g4" id="mets"></div><div class="card" style="margin-top:14px"><h4 style="margin-top:0">Risk distribution</h4><div id="dist"></div></div>
+<div class="card" style="margin-top:14px"><h4 style="margin-top:0">Analysis history <span class="mu">(summaries only – raw content is never kept)</span></h4><div class="row" id="flt"><span class="chip on" data-f="all">All</span><span class="chip" data-f="safe">Safe</span><span class="chip" data-f="suspicious">Suspicious</span><span class="chip" data-f="high">High Risk</span></div><div style="overflow-x:auto"><table id="hist"></table></div></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const COL={safe:'#22c55e',suspicious:'#f59e0b',high:'#ef4444'};
+const LAB={scam:{safe:'SAFE',suspicious:'SUSPICIOUS',high:'HIGH RISK'},url:{safe:'LEGITIMATE',suspicious:'SUSPICIOUS',high:'PHISHING'}};LAB.qr=LAB.scam;
+const lvl=(s,h=60,m=30)=>s>=h?'high':s>=m?'suspicious':'safe';
+const S={scans:[],f:'all',mode:'mask'};
+function go(t){document.querySelectorAll('.pg').forEach(p=>p.classList.toggle('on',p.id==t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t=='dash')dash();scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+document.querySelectorAll('[data-m]').forEach(c=>c.onclick=()=>{S.mode=c.dataset.m;document.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',x==c))});
+document.querySelectorAll('[data-f]').forEach(c=>c.onclick=()=>{S.f=c.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('on',x==c));dash()});
+function add(type,r,sum){S.scans.unshift({t:new Date(),type,level:r.level,score:r.score,cat:r.category,sum})}
+/* ---------- render ---------- */
+function show(el,r,kind){const c=COL[r.level];
+const fac=r.factors.length?r.factors.map(f=>`<div class="f ${f.sev}"><span>${f.sev=='h'?'🔴':f.sev=='s'?'🟠':'🟢'} ${esc(f.label)} ${f.m?`<i>“${esc(f.m.slice(0,60))}”</i>`:''}</span><em>${f.pts>0?'+':''}${f.pts}</em></div>`).join('')+`<div class="f" style="border-color:${c}"><b>Total</b><em>${r.score}/100</em></div>`:'<p class="mu">No risk indicators found.</p>';
+const bars=(r.bars||[]).map(b=>`<div class="bar"><small>${b[0]} <b>${b[1]}%</b></small><div><span data-w="${b[1]}"></span></div></div>`).join('');
+el.innerHTML=`<div class="res" style="--c:${c}"><div class="top"><div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" class="bg"/><circle cx="18" cy="18" r="15.9" class="fg" stroke-dasharray="0 100"/></svg><b>0</b></div><div><span class="badge">${LAB[kind][r.level]}</span><h3>${esc(r.category)}</h3><small class="mu">Confidence ${r.confidence}%${r.lang?' · Language: '+r.lang:''}</small></div></div>
+${r.hl?`<h4>Evidence highlighted</h4><div class="hl">${r.hl}</div><small class="mu"><mark class="h" style="background:#ef444499;color:#fff">high-risk</mark> <mark style="background:#f59e0b88;color:#fff">suspicious</mark> <mark style="background:#22c55e66;color:#fff">safe context</mark></small>`:''}
+${bars?`<h4>Risk breakdown</h4>${bars}`:''}<h4>Why this verdict?</h4>${fac}<h4>In plain language</h4><p class="ex">${esc(r.explain)}</p><p>✅ <b>Recommended:</b> ${esc(r.rec)}</p>${r.extra||''}</div>`;
+requestAnimationFrame(()=>setTimeout(()=>{el.querySelector('.fg').setAttribute('stroke-dasharray',r.score+' 100');el.querySelectorAll('.bar span').forEach(s=>s.style.width=s.dataset.w+'%');const b=el.querySelector('.ring b');let n=0;const t=setInterval(()=>{n=Math.min(r.score,n+Math.max(1,r.score/30|0));b.textContent=n;if(n>=r.score)clearInterval(t)},25)},30))}
+const err=(el,m)=>el.innerHTML=`<div class="res" style="--c:#f59e0b">⚠️ ${esc(m)}</div>`;
+/* ---------- scam engine ---------- */
+const RULES=[
+[/(urgent\w*|immediately|turant|jaldi|tatkal|aaj\s*hi|today|within\s+\d+\s*(hours?|hrs?|mins?|minutes?)|expir\w*|warna|otherwise|वरना|तुरंत|जल्दी|आज\s*ही)/g,15,'Urgency / pressure language','Urgency Scam','s'],
+[/(block\w*|suspend\w*|deactivat\w*|freez\w*|legal\s+action|arrest|band\s+ho\w*|ब्लॉक|बंद|बन्द)/g,20,'Account-block threat','Threat / Impersonation','h'],
+[/(kyc|केवाईसी|केवाइसी)/g,20,'KYC request (classic impersonation)','Fake KYC Scam','h'],
+[/(otp|upi\s*pin|m-?pin|\bpin\b|password|cvv|ओटीपी|पिन|पासवर्ड)/g,30,'Asks for OTP / PIN / password','Credential Theft','h'],
+[/(refund|cash\s*back|reward|lottery|prize|lucky|gift\s*card|रिफंड|कैशबैक|इनाम)/g,15,'Refund / cashback / reward bait','Refund Scam','s'],
+[/(pay\s*(rs\.?|inr|₹)?\s*\d+|₹\s*\d+|rs\.?\s*\d+|collect\s*request|payment\s*(kar\w*|request)|scan\w*.{0,25}(qr|code)|qr.{0,30}scan|receive\s*(the\s*)?(money|payment)|payment\s*करें|पेमेंट|भुगतान)/g,25,'Payment / scan-to-receive request','Payment Request / QR Scam','h'],
+[/(sbi|hdfc|icici|axis\s*bank|paytm|phonepe|gpay|google\s*pay|rbi|npci|income\s*tax|bank\s*officer|आरबीआई|एसबीआई)/g,10,'Bank / authority name used','Impersonation','s'],
+[/(https?:\/\/\S+|www\.\S+|bit\.ly\S*|tinyurl\S*|click\s*(here|this|on)|link\s*(par|pe|per)|लिंक)/g,15,'External link / click request','Phishing Link','s'],
+[/(customer\s*care|helpline|call\s*(this\s*)?number|anydesk|teamviewer|quicksupport|\.apk|support\s*team)/g,20,'Fake support / remote-access hook','Fake Customer Support','h']];
+const SAFE=/(do\s*not\s*share|never\s*share|don'?t\s*share|share\s*na\s*kare\w*|किसी\s*से\s*शेयर\s*न)/g;
+function norm(t){return t.toLowerCase().replace(/(?<=[a-z])[01345@$7]|[01345@$7](?=[a-z])/g,c=>({0:'o',1:'i',3:'e',4:'a',5:'s',7:'t','@':'a','$':'s'}[c]))}
+function lang(t){const d=/[\u0900-\u097F]/.test(t),l=/[a-z]/i.test(t),h=/\b(aap\w*|hai|hain|karo|kare|kijiye|krna|karna|warna|nahi|abhi|turant|paise|sir|madam|jaldi|karein|karke)\b/i.test(t);return d&&l?'Hindi + English (mixed)':d?'Hindi':h?'Hinglish':'English'}
+function scamAnalyze(t){const n=norm(t),hits=[],fac=[],cats={};let score=0;
+RULES.forEach(([re,pts,label,cat,sev])=>{re.lastIndex=0;let m,first;while((m=re.exec(n))){if(!m[0])break;hits.push({s:m.index,e:m.index+m[0].length,c:sev});first=first||t.slice(m.index,m.index+m[0].length)}if(first){score+=pts;fac.push({label,pts,sev,m:first});cats[cat]=(cats[cat]||0)+pts}});
+SAFE.lastIndex=0;let m=SAFE.exec(n);if(m){hits.push({s:m.index,e:m.index+m[0].length,c:'g'});if(score>0){score-=20;fac.push({label:'Contains a safety warning (legit-style)',pts:-20,sev:'g',m:t.slice(m.index,m.index+m[0].length)})}}
+score=Math.max(0,Math.min(100,score));hits.sort((a,b)=>a.s-b.s);let out='',p=0;for(const h of hits){if(h.s<p)continue;out+=esc(t.slice(p,h.s))+`<mark class="${h.c}">${esc(t.slice(h.s,h.e))}</mark>`;p=h.e}out+=esc(t.slice(p));
+const level=lvl(score),top=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0],names=fac.filter(f=>f.pts>0).map(f=>f.label.toLowerCase());
+return{level,score,category:top?top[0]:'No scam pattern',factors:fac,hl:out,lang:lang(t),confidence:Math.min(96,55+fac.length*8),
+explain:level=='safe'?'No common scam patterns were found. Stay careful with unknown senders and never share OTP or PIN.':`This message shows: ${names.join('; ')}. Legitimate banks and apps do not ask you to reveal OTPs or PINs, pay to “receive” money, or verify KYC through links in messages.`,
+rec:level=='high'?'Do NOT click, pay or reply. Block the sender and report at cybercrime.gov.in or call 1930.':level=='suspicious'?'Verify directly via the official app or website. Do not use links from the message.':'Looks fine. Keep OTP/PIN private.'}}
+function runScam(){const t=sIn.value.trim();if(!t)return err($('#sOut'),'Please paste a message first.');if(t.length>5000)return err($('#sOut'),'Message too long (max 5000 characters).');const r=scamAnalyze(t);add('Scam',r,r.category);show($('#sOut'),r,'scam')}
+/* ---------- URL engine ---------- */
+const lev=(a,b)=>{const m=[...Array(a.length+1)].map((_,i)=>[i,...Array(b.length).fill(0)]);for(let j=1;j<=b.length;j++)m[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return m[a.length][b.length]};
+const BR={paytm:'paytm.com',phonepe:'phonepe.com',amazon:'amazon.in',sbi:'sbi.co.in',hdfc:'hdfcbank.com',icici:'icicibank.com',axis:'axisbank.com',google:'google.com',flipkart:'flipkart.com',npci:'npci.org.in',irctc:'irctc.co.in',netflix:'netflix.com',paypal:'paypal.com',microsoft:'microsoft.com',whatsapp:'whatsapp.com'};
+const OFF=new Set([...Object.values(BR),'amazon.com','onlinesbi.sbi','onlinesbi.com','wikipedia.org','github.com','gov.in']);
+const BADTLD=/\.(xyz|top|tk|ml|ga|cf|gq|click|live|icu|buzz|work|support|rest|cam|zip|mov)$/,SHORT=/^(bit\.ly|tinyurl\.com|t\.co|goo\.gl|is\.gd|cutt\.ly|rb\.gy|shorturl\.at)$/;
+function urlAnalyze(raw){raw=raw.trim();const mm=raw.match(/(https?:\/\/\S+|www\.\S+|\b[\w-]+(\.[\w-]+)+\.?[a-z]{2,}\/\S*)/i);let s=mm?mm[0]:raw;if(/\s/.test(s)||!s)return null;if(!/^[a-z]+:\/\//i.test(s))s='http://'+s;let u;try{u=new URL(s)}catch{return null}
+const host=u.hostname.toLowerCase().replace(/\.$/,''),labels=host.split('.'),ip=/^\d{1,3}(\.\d{1,3}){3}$/.test(host)||/^\[/.test(host);
+const k=labels.length>2&&labels[labels.length-1].length==2&&labels[labels.length-2].length<=3?3:2,reg=labels.slice(-k).join('.'),sub=labels.slice(0,-k),main=labels[labels.length-k]||host;
+const https=u.protocol=='https:',official=!ip&&(OFF.has(reg)||/\.(gov|nic)\.in$/.test(host));
+const fac=[],add=(label,pts,sev,cat,m)=>fac.push({label,pts,sev,cat,m});
+if(official){fac.push({label:'Known official domain',pts:0,sev:'g',cat:'r'})}else{
+const flat=host.replace(/[^a-z0-9]/g,'').replace(/(?<=[a-z])[013457]|[013457](?=[a-z])/g,c=>({0:'o',1:'i',3:'e',4:'a',5:'s',7:'t'}[c])),subflat=sub.join('').replace(/[^a-z]/g,'');let done=false;
+for(const b in BR){if(subflat.includes(b)&&!main.includes(b)){add('Misleading subdomain: brand name placed before the real domain “'+reg+'”',30,'h','b',sub.join('.'));done=true;break}
+if(flat.includes(b)&&!OFF.has(reg)){add('Brand impersonation: “'+b+'” inside an unofficial domain',40,'h','b',host);if(!host.replace(/[^a-z]/g,'').includes(b))add('Lookalike character substitution (e.g. 0→o, 1→i)',20,'s','b',main);done=true;break}}
+if(!done)for(const b in BR)for(const part of main.split('-'))if(part.length>=4&&part!=b&&lev(part,b)<=2){add('Typosquatting: “'+part+'” is 1–2 letters from “'+b+'”',35,'h','b',part);done=true;break}
+if(ip)add('IP address used instead of a domain name',35,'h','s',host);
+if(host.includes('xn--'))add('Punycode (possible Unicode lookalike)',30,'h','b',host);else if(/[^\x00-\x7f]/.test(host))add('Non-ASCII characters in domain',25,'h','b',host);
+if(BADTLD.test(host))add('Suspicious / abuse-prone TLD',15,'s','r','.'+labels.pop());
+if(SHORT.test(host))add('URL shortener hides destination',15,'s','r',host);
+if(sub.length>3)add('Excessive subdomains ('+sub.length+')',10,'s','s',sub.join('.'));
+if((host.match(/-/g)||[]).length>=2)add('Many hyphens in domain',8,'s','s',host);
+if(u.username||/@/.test(s.split('/')[2]||''))add('“@” trick hides real destination',25,'h','s','@');
+const kw=[...new Set((host+u.pathname).toLowerCase().match(/login|verify|secure|update|kyc|bonus|refund|wallet|account|signin|confirm/g)||[])];if(kw.length)add('Credential-bait keywords in URL',Math.min(20,kw.length*10),'s','r',kw.join(', '));
+if(/(redirect|url|next|continue|return)=https?/i.test(u.search))add('Redirect parameter points to another site',15,'s','s',u.search.slice(0,40));
+if(!https)add('No HTTPS encryption',15,'s','h','http://');
+if(s.length>200)add('Very long URL',5,'s','s',s.length+' chars')}
+if(https)fac.push({label:'HTTPS enabled',pts:0,sev:'g',cat:'h'});
+const score=Math.min(100,fac.reduce((a,f)=>a+f.pts,0)),sum=c=>fac.filter(f=>f.cat==c).reduce((a,f)=>a+f.pts,0),B=(v,mn=5)=>Math.max(mn,Math.min(100,Math.round(v)));
+const level=lvl(score,55,25),has=c=>fac.some(f=>f.cat==c&&f.pts>0),goals=[];
+if(has('b')||level!='safe')goals.push('Steal your passwords','Redirect you to a fake login page');if(/kyc|bank|sbi|hdfc|icici|paytm|axis|upi/i.test(s))goals.push('Capture banking / UPI credentials');if(level!='safe')goals.push('Collect personal information (Aadhaar, PAN, OTP)');
+return{level,score,category:official?'Official domain':level=='safe'?'No phishing signals':has('b')?'Brand Impersonation Phishing':'Suspicious URL',factors:fac.filter(f=>f.pts||f.sev=='g'),lang:null,confidence:official?95:Math.min(94,60+fac.length*7),host,
+bars:[['HTTPS risk',https?8:70],['Domain reputation risk',B(official?5:25+sum('r')*2.2)],['Brand similarity',B(sum('b')*2.2)],['URL structure risk',B(sum('s')*2.5)]],
+explain:level=='safe'?'The domain looks legitimate; long URLs alone are not treated as suspicious.':'The link at '+host+' shows signs of a fake site built to look like a trusted brand. Always type the official address yourself instead of tapping links in messages.',
+rec:level=='high'?'Do not open this link or enter any details. Report at cybercrime.gov.in.':level=='suspicious'?'Avoid entering credentials; open the official site manually.':'Safe to proceed, still check the address bar before logging in.',
+extra:goals.length?`<h4>What an attacker may be trying to do</h4>${[...new Set(goals)].map(g=>`<div class="f h"><span>🎯 ${g}</span></div>`).join('')}`:''}}
+function runUrl(){const r=urlAnalyze(uIn.value);if(!uIn.value.trim()||!r)return err($('#uOut'),'That doesn’t look like a valid URL. Try something like https://example.com/login');add('URL',r,r.host);show($('#uOut'),r,'url')}
+/* ---------- QR ---------- */
+function upiAnalyze(p){const q=new URL(p).searchParams,pa=(q.get('pa')||'').toLowerCase(),pn=q.get('pn')||'',am=q.get('am'),tn=q.get('tn')||'',fac=[{label:'UPI payment request detected',pts:25,sev:'h'}],h=pa.split('@')[1]||'';
+if(!/^(ybl|oksbi|okhdfcbank|okicici|okaxis|paytm|ibl|axl|upi|apl)$/.test(h)||!pa)fac.push({label:'Unrecognised UPI handle',pts:15,sev:'s',m:pa});else fac.push({label:'Unknown payee (not in your contacts)',pts:15,sev:'s',m:pa});
+if(/(refund|support|care|kyc|cashback|reward|lucky|helpdesk|\d{3,})/.test(pa))fac.push({label:'Suspicious words/digits in UPI ID',pts:25,sev:'h',m:pa.split('@')[0]});
+const bn=Object.keys(BR).find(b=>norm(pn).includes(b));if(bn&&!pa.includes(bn))fac.push({label:'Merchant name claims “'+bn+'” but UPI ID doesn’t match',pts:20,sev:'h',m:pn});
+if(am)fac.push({label:'Amount pre-filled (₹'+am+') – “receive money” QRs never need payment',pts:10,sev:'s',m:'₹'+am});
+if(tn){const r=scamAnalyze(tn);if(r.score>0)fac.push({label:'Suspicious payment note',pts:Math.min(30,Math.round(r.score/2)),sev:'s',m:tn})}
+const score=Math.min(100,fac.reduce((a,f)=>a+f.pts,0)),level=lvl(score,55,25);
+return{level,score,category:'UPI Payment Request',factors:fac,confidence:Math.min(95,60+fac.length*7),explain:'This QR asks you to PAY money. Scammers send such QR codes saying you will “receive” a refund or cashback. Receiving money never needs a PIN or QR scan.',rec:level=='high'?'Do not scan or pay. Report the sender and the UPI ID to your bank / 1930.':'Pay only to merchants you recognise and verify the name shown before entering PIN.'}}
+function runQr(pl){pl=(pl||'').trim();const o=$('#qOut');if(!pl)return err(o,'Enter or upload a QR first.');let r,type;
+try{if(/^upi:\/\//i.test(pl)){type='UPI Payment Request';r=upiAnalyze(pl)}else if(/^https?:\/\//i.test(pl)||/^www\./i.test(pl)){type='Website URL';r=urlAnalyze(pl);if(!r)throw 0}else{type='Plain text';r=scamAnalyze(pl)}}catch{return err(o,'QR content could not be parsed safely.')}
+const kind=type=='Website URL'?'url':'qr';r.extra=`<h4>QR detected</h4><div class="f"><span>📦 ${type} → routed to ${type=='Website URL'?'PhishGuard':'Scam Detector'}</span></div><p><code>${esc(pl.slice(0,200))}</code></p>`+(r.extra||'');add('QR',r,type);show(o,r,kind=='url'?'url':'qr')}
+qF.onchange=e=>{const f=e.target.files[0],o=$('#qOut');if(!f)return;if(f.size>5e6)return err(o,'Image too large (max 5 MB).');if(typeof jsQR=='undefined')return err(o,'QR decoder failed to load. Check your connection or paste the payload.');const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const x=c.getContext('2d');x.drawImage(img,0,0);const d=x.getImageData(0,0,c.width,c.height),res=jsQR(d.data,d.width,d.height);URL.revokeObjectURL(img.src);if(!res)return err(o,'No QR code found – the image may be blurry or corrupted.');qIn.value=res.data;runQr(res.data)};img.onerror=()=>err(o,'Unsupported or corrupted image file.');img.src=URL.createObjectURL(f)};
+/* ---------- privacy ---------- */
+const D=['0123456789','1234067895','2340178956','3401289567','4012395678','5987604321','6598710432','7659821043','8765932104','9876543210'],P=['0123456789','1576283094','5803796142','4796854213','9453126870','4286573901','2793806415','7046913258'];
+const verhoeff=n=>{let c=0;[...n].reverse().forEach((d,i)=>c=+D[c][+P[i%8][d]]);return c==0};
+const verCheck=n=>{let c=0;[...n].reverse().forEach((d,i)=>c=+D[c][+P[(i+1)%8][d]]);return[0,4,3,2,1,5,6,7,8,9][c]};
+const luhn=n=>{if(n.length<13||n.length>19)return false;let s=0;[...n].reverse().forEach((d,i)=>{d=+d;if(i%2){d*=2;if(d>9)d-=9}s+=d});return s%10==0};
+const PII=[['Aadhaar',/(?<!\d)[2-9]\d{3}[\s-]?\d{4}[\s-]?\d{4}(?!\d)/g,v=>verhoeff(v.replace(/\D/g,'')),'h'],['Card',/(?<!\d)(?:\d[ -]?){12,18}\d(?!\d)/g,v=>luhn(v.replace(/\D/g,'')),'h'],['PAN',/\b[A-Z]{3}[ABCFGHLJPT][A-Z]\d{4}[A-Z]\b/g,0,'h'],['IFSC',/\b[A-Z]{4}0[A-Z0-9]{6}\b/g,0,'s'],['UPI ID',/\b[\w.\-]{2,}@(?:ybl|oksbi|okhdfcbank|okicici|okaxis|paytm|upi|apl|ibl|axl)\b/gi,0,'s'],['Email',/\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b/g,0,'s'],['Phone',/(?<!\d)(?:\+91[\s-]?|0)?[6-9]\d{4}[\s-]?\d{5}(?!\d)/g,0,'s'],['Bank Account',/(?:a\/c|acc(?:oun)?t?\s*(?:no\.?|number|num)?|खाता(?:\s*संख्या)?)[\s:.#-]*(\d{9,18})(?!\d)/gi,0,'h',1],['PIN Code',/(?:pin\s*code|pincode|पिन\s*कोड)[\s:.-]*([1-9]\d{5})(?!\d)/gi,0,'s',1]];
+function maskV(type,v){const dg=v.replace(/\D/g,'').length;let k=0;const keep=(ch)=>v.replace(/\d/g,c=>++k>dg-4?c:ch);
+return type=='PAN'?'XXXXX'+v.slice(5):type=='Phone'?keep('*'):type=='IFSC'?v.slice(0,4)+'XXXXXXX':type=='Email'||type=='UPI ID'?v[0]+'***'+v.slice(v.indexOf('@')):type=='PIN Code'?'XXXXXX':keep('X')}
+function privAnalyze(t){const hits=[];PII.forEach(([type,re,val,sev,g])=>{re.lastIndex=0;let m;while((m=re.exec(t))){let v=g?m[g]:m[0],s=g?m.index+m[0].lastIndexOf(v):m.index;if(val&&!val(v))continue;const e=s+v.length;if(hits.some(h=>s<h.e&&e>h.s))continue;hits.push({type,s,e,v,sev})}});hits.sort((a,b)=>a.s-b.s);return hits}
+const mk=(h)=>S.mode=='remove'?'':S.mode=='redact'?'[REDACTED]':maskV(h.type,h.v);
+function runPriv(){const t=pIn.value,o=$('#pOut');if(!t.trim())return err(o,'Paste text or load a file first.');if(t.length>200000)return err(o,'Text too large (max 200,000 characters).');
+const hits=privAnalyze(t),cnt={};hits.forEach(h=>cnt[h.type]=(cnt[h.type]||0)+1);const hi=hits.some(h=>h.sev=='h'),score=hits.length?Math.min(100,hits.reduce((a,h)=>a+(h.sev=='h'?30:12),0)):0,level=hi?'high':hits.length?'suspicious':'safe';
+let out='',p=0;hits.forEach(h=>{out+=t.slice(p,h.s)+mk(h);p=h.e});out+=t.slice(p);window._clean=out;
+const r={level,score,category:hits.length?'Privacy Risk: '+(hi?'HIGH':'MEDIUM'):'Privacy Risk: LOW',confidence:hits.length?92:70,
+factors:Object.entries(cnt).map(([k,v])=>{const sev=hits.find(h=>h.type==k).sev;return{label:k+' × '+v,pts:v*(sev=='h'?30:12),sev}}),
+explain:hits.length?'Sensitive personal data was found. Aadhaar and cards are checksum-validated (Verhoeff / Luhn) and PAN/IFSC structure-checked, so random numbers are not flagged. Mask before sharing.':'No sensitive Indian identifiers detected.',rec:hits.length?'Share only the protected copy below.':'Safe to share.',
+extra:hits.length?`<h4>Protected preview</h4><table><tr><th>Type</th><th>Protected</th></tr>${hits.slice(0,8).map(h=>`<tr><td>${h.type}</td><td><code>${esc(mk(h)||'(removed)')}</code></td></tr>`).join('')}</table><h4>Clean copy</h4><div class="hl">${esc(out)}</div><div class="row"><button class="btn" onclick="navigator.clipboard.writeText(_clean).then(()=>this.textContent='Copied ✓')">Copy Protected Text</button><button class="btn alt" onclick="dl()">Download Clean Copy</button></div>`:''};
+add('Privacy',r,hits.length+' items found');show(o,r,'scam');o.querySelector('.badge').textContent=hi?'HIGH':hits.length?'MEDIUM':'LOW'}
+function dl(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([_clean],{type:'text/plain'}));a.download='protected-copy.txt';a.click()}
+pF.onchange=e=>{const f=e.target.files[0];if(!f)return;if(f.size>1e6)return err($('#pOut'),'File too large (max 1 MB).');const r=new FileReader();r.onload=()=>pIn.value=r.result;r.onerror=()=>err($('#pOut'),'Could not read this file.');r.readAsText(f)};
+/* ---------- demos / chat / dashboard ---------- */
+function demo(k){const A=('2345678901'+'2').slice(0,11),aad=A+verCheck(A),fa=aad.replace(/(\d{4})(\d{4})(\d{4})/,'$1 $2 $3');
+if(k=='kyc'){go('scam');sIn.value='URGENT!!! आपका KYC expire हो गया है, तुरंत verify करें. Else account block ho jayega aaj hi. Click here: http://sbi-kyc-update.xyz/verify and share OTP to complete.';runScam()}
+if(k=='refund'){go('scam');sIn.value='Sir आपका cashback pending hai. Refund पाने के लिए ₹1 payment करें. QR scan karke payment receive karein. UPI PIN enter karein.';runScam()}
+if(k=='qr'){go('qr');qIn.value='upi://pay?pa=refund.support786@okaxis&pn=Paytm%20Support&am=1&tn=Refund%20KYC%20urgent';runQr(qIn.value)}
+if(k=='url'){go('url');uIn.value='http://paytm.verify-login.xyz/update-kyc';runUrl()}
+if(k=='pii'){go('priv');pIn.value=`Name: Ravi Kumar\nAadhaar: ${fa}\nPAN: ABCPK1234F\nMobile: +91 98765 43210, email ravi.k@gmail.com\nA/c No: 123456789012  IFSC: SBIN0001234\nUPI: ravi@oksbi  Pincode: 440001\nOrder id 4829104857 (not PII)`;runPriv()}}
+function chatCheck(){const r=urlAnalyze('http://sbi-secure-login.top/kyc');add('URL',r,r.host);show($('#chatRes'),r,'url')}
+function dash(){const a=S.scans,c=l=>a.filter(x=>x.level==l).length,avg=a.length?a.reduce((s,x)=>s+x.score,0)/a.length:0;
+$('#mets').innerHTML=[['Security Score',Math.round(100-avg),'#38bdf8'],['Total Scans',a.length,'#a78bfa'],['Safe',c('safe'),COL.safe],['Suspicious',c('suspicious'),COL.suspicious],['High Risk',c('high'),COL.high]].map(m=>`<div class="card stat"><span class="mu">${m[0]}</span><b style="color:${m[2]}">${m[1]}</b></div>`).join('');
+const tot=a.length||1;$('#dist').innerHTML=a.length?['safe','suspicious','high'].map(l=>`<div class="bar"><small>${l} · ${c(l)}</small><div><span style="width:${c(l)/tot*100}%;background:${COL[l]}"></span></div></div>`).join(''):'<span class="mu">Run a scan to see your distribution.</span>';
+const rows=a.filter(x=>S.f=='all'||x.level==S.f);$('#hist').innerHTML=rows.length?'<tr><th>Time</th><th>Type</th><th>Risk</th><th>Score</th><th>Category</th><th>Summary</th></tr>'+rows.map(x=>`<tr><td>${x.t.toLocaleTimeString()}</td><td>${x.type}</td><td><span class="dot" style="background:${COL[x.level]}"></span> ${x.level}</td><td>${x.score}</td><td>${esc(x.cat)}</td><td>${esc(x.sum)}</td></tr>`).join(''):'<tr><td class="mu">No scans yet.</td></tr>';
+document.querySelectorAll('#dist span').forEach(s=>s.style.width=s.style.width)}
+</script></body></html>
